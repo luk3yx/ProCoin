@@ -1,51 +1,54 @@
 import random
+from typing import Dict
 
 # Local imports
-from items import Item, ItemInterface
+from .items import Item, ItemInterface
 
 class Store:
-
     __slots__ = ('items', 'current_stock')
+
     def __init__(self, items: ItemInterface) -> None:
         self.items = items
-        self.current_stock = {}
+        self.current_stock: Dict[Item, int] = {}
         self._generateStore()
 
     def __str__(self) -> str:
-        return self.store_string()
+        return self.store_string
 
     @property
     def store_string(self) -> str:
         store_string = ""
-        for item: Item, in_stock: int in self.current_stock.items():
-            # TODO if the item is a big item it it should get
-            # a diamond emoji added in front of it.
-            store_string += f"`{in_stock} {item.item_string}\n"
+        for item, in_stock in self.current_stock.items():
+            # The diamond prefix is handled in items.py, no need to worry about
+            # it here.
+            store_string += f"`{in_stock}` {item.item_string}\n"
+        return store_string
 
-    # Returns a 0 to indicate a success or
-    # a 1 to indicate that it failed.
-    def buy(item: Item, qty: int) -> int:
+    # Returns a boolean (booleans are subclasses of ints anyway).
+    def buy(self, item: Item, qty: int) -> bool:
         # Can't request less than 1 item.
         if qty < 1:
-            return 1
-        
+            return False
+
         # Make sure the item(s) are in stock.
         in_stock = self.current_stock.get(item, 0)
         if in_stock < qty:
-            return 1
+            return False
 
         # Remove the item(s) from the stock.
         self.current_stock[item] -= qty
-        
+
         # Remove out-of-stock items from the store.
         if self.current_stock[item] == 0:
-            self.current_stock.pop(item)
+            del self.current_stock[item]
 
-    def _is_sizeable(item: Item) -> bool:
+        return True
+
+    def _is_sizeable(self, item: Item) -> bool:
         # Item class could add interface for getting cost etc.
         return (item.cost > 5)
 
-    def _generateStore() -> None:
+    def _generateStore(self) -> None:
         sizeable_items = self.items.filter_by(self._is_sizeable)
-        for item: Item in sizeable_items:
+        for item in sizeable_items:
             self.current_stock[item] = item.default_qty

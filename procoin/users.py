@@ -1,23 +1,10 @@
 from typing import Any, Dict, List, Optional, Union
 from . import items
-
-# TODO: Use the actual store
-import abc
-class AbstractStore(abc.ABC):
-    def __str__(self) -> str: ...
-    def generate_store(self) -> None: ...
-    def get_store_string(self) -> str: ...
-    def buy(self, item: items.Item, qty: int) -> bool: ...
-
-try:
-    from .store import Store # type: ignore
-    AbstractStore.register(Store)
-except ImportError:
-    pass
+from .store import Store as _Store
 
 class User:
     __slots__ = ('store', 'id', 'balance', 'boost')
-    def __init__(self, store: AbstractStore, id: str) -> None:
+    def __init__(self, store: _Store, id: str) -> None:
         self.store = store
         self.id: str = id
         self.boost: int = 0
@@ -31,7 +18,7 @@ class User:
 
     # Create a User object from a dict.
     @classmethod
-    def from_dict(cls, store: AbstractStore, data: Dict[Any, Any]):
+    def from_dict(cls, store: _Store, data: Dict[Any, Any]):
         id = data['id']
         balance = data['balance']
         inventory = data['inventory']
@@ -47,12 +34,11 @@ class User:
     # Recalculates the user's boost, should be called when the inventory is
     # updated and the delta is not easily obtainable.
     def recalc_boost(self) -> None:
-        # ii: items.ItemInterface = self.store.items
-        # boost: int = 0
-        # for item_id, qty in self.inventory.items():
-        #     boost += ii.get_boost(item_id) * qty
-        # self.boost = boost
-        raise NotImplementedError
+        ii: items.ItemInterface = self.store.items
+        boost: int = 0
+        for item_id, qty in self.inventory.items():
+            boost += ii.get_boost(item_id) * qty
+        self.boost = boost
 
     # Buy an item from the store.
     def buy_item(self, item: items.Item, qty: int) -> bool:
