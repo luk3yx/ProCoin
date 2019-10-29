@@ -36,6 +36,7 @@ class Item:
         return {'id': self.id, 'name': self.name, 'cost': self.cost,
                 'boost': self.boost, 'default_qty': self.default_qty}
 
+    # Creates an Item from a dict (similar to Item.to_dict()).
     @classmethod
     def from_dict(cls, data: Dict[Any, Any]):
         id = data['id']
@@ -56,6 +57,11 @@ class ItemInterface:
     # Items is a list of item dictionaries.
     def __init__(self, items: List[Item]) -> None:
         self.items = items
+
+    # Creates the Item list from a list of dicts.
+    @classmethod
+    def from_dicts(cls, items: Iterable[Dict[Any, Any]]):
+        return cls(list(map(Item.from_dict, items)))
 
     def get_item(self, item_id: int) -> Item:
         if item_id < 0:
