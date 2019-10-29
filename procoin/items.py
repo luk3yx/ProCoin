@@ -76,7 +76,10 @@ class ItemInterface:
 
     # Get an item's name from its ID.
     def get_name(self, item_id: int) -> str:
-        return self.get_item(item_id).name
+        try:
+            return self.get_item(item_id).name
+        except IndexError:
+            return 'Unknown Item'
 
     # Get an item's cost from its ID.
     def get_cost(self, item_id: int) -> int:
@@ -84,7 +87,10 @@ class ItemInterface:
 
     # Get an item's boost from its ID.
     def get_boost(self, item_id: int) -> int:
-        return self.get_item(item_id).boost
+        try:
+            return self.get_item(item_id).boost
+        except IndexError:
+            return 0
 
     # Get the default quantity of an item from its ID.
     def get_default_qty(self, item_id: int) -> int:
