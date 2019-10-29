@@ -70,15 +70,8 @@ class User:
         return success
 
 class UserInterface:
-    def __init__(self, users: List[User]) -> None:
+    def __init__(self, users: Dict[str, User]) -> None:
         self.users = users
 
-    def find_by_id(self, user_id: int) -> Optional[User]:
-        if user_id < 0:
-            return None
-
-        # Don't bother checking len(self.users).
-        try:
-            return self.users[user_id]
-        except IndexError:
-            return None
+    def find_by_id(self, user_id: str) -> Optional[User]:
+        return self.users.get(user_id)
