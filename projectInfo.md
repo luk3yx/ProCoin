@@ -12,6 +12,7 @@ Coding style:
  - Strings should be formatted with f-strings.
  - 80 characters per line maximum.
  - Use \ to split string literals. ('this'\ \n 'and'\ \n 'this')
+ - One newline seperating functions and methods, 2 seperating classes.
 
 
 Items should have IDs, assigned by an automation script. A variable will track what the next ID is. IDs of removed items will not be re-used, because a user who has the IDs memorized could purchase an unexpected item by mistake.
