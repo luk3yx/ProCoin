@@ -51,6 +51,7 @@ class Item:
         assert isinstance(default_qty, int)
         return cls(id, name, cost, boost, default_qty)
 
+
 # An ItemInterface will allow the program to work with all
 # the items that exist.
 class ItemInterface:

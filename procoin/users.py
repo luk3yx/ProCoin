@@ -69,6 +69,7 @@ class User:
 
         return success
 
+
 class UserInterface:
     def __init__(self, users: Dict[str, User]) -> None:
         self.users = users
