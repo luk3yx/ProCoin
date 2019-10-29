@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Callable
 
 # An ItemInterface will allow the program to work with all
 # the items that exist. 
@@ -45,7 +45,7 @@ class ItemInterface:
     # Key should be a function that accepts an Item and returns
     # True or False. filterBy will return a list of all items for
     # which key returns True.
-    def filterBy(self, key: function) -> [int]:
+    def filterBy(self, key: Callable) -> [int]:
         pass
 
 
