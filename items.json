@@ -1,0 +1,602 @@
+{
+    "International Space Station": {
+        "name": "International Space Station",
+        "cost": 50400000000,
+        "boost": 196199000,
+        "default quantity": 1
+    },
+    "Diamond Armor": {
+        "name": "Diamond Armor",
+        "cost": 5307786900,
+        "boost": 25100000,
+        "default quantity": 1
+    },
+    "Hubble Telescope": {
+        "name": "Hubble Telescope",
+        "cost": 2870000000,
+        "boost": 14320231,
+        "default quantity": 1
+    },
+    "Baby Shark": {
+        "name": "Baby Shark",
+        "cost": 2639860696,
+        "boost": 13199303,
+        "default quantity": 1
+    },
+    "Infinity Gauntlet": {
+        "name": "Infinity Gauntlet",
+        "cost": 2147483647,
+        "boost": 13166600,
+        "default quantity": 1
+    },
+    "Wayne Manor": {
+        "name": "Wayne Manor",
+        "cost": 800000000,
+        "boost": 3970009,
+        "default quantity": 1
+    },
+    "Because I'm Batman!": {
+        "name": "Because I'm Batman!",
+        "cost": 682450750,
+        "boost": 3402000,
+        "default quantity": 1
+    },
+    "141-year-old newspaper": {
+        "name": "141-year-old newspaper",
+        "cost": 230000000,
+        "boost": 948324,
+        "default quantity": 1
+    },
+    "1963 Ferrari GTO": {
+        "name": "1963 Ferrari GTO",
+        "cost": 52000000,
+        "boost": 196300,
+        "default quantity": 5
+    },
+    "Honus Wagner Rookie Card": {
+        "name": "Honus Wagner Rookie Card",
+        "cost": 2000000,
+        "boost": 8727,
+        "default quantity": 3
+    },
+    "Captain America's Shield": {
+        "name": "Captain America's Shield",
+        "cost": 17871941,
+        "boost": 113100,
+        "default quantity": 1
+    },
+    "Gold Plated Bugatti Veyron": {
+        "name": "Gold Plated Bugatti Veyron",
+        "cost": 10004738,
+        "boost": 43253,
+        "default quantity": 1
+    },
+    "Mjolnir": {
+        "name": "Mjolnir",
+        "cost": 4490000,
+        "boost": 30000,
+        "default quantity": 1
+    },
+    "Crystal Piano": {
+        "name": "Crystal Piano",
+        "cost": 3200000,
+        "boost": 14324,
+        "default quantity": 1
+    },
+    "Thanos' Sword": {
+        "name": "Thanos' Sword",
+        "cost": 2014000,
+        "boost": 10115,
+        "default quantity": 1
+    },
+    "The Tumbler Batmobile": {
+        "name": "The Tumbler Batmobile",
+        "cost": 1800000,
+        "boost": 6930,
+        "default quantity": 1
+    },
+    "Magnetic Floating Bed": {
+        "name": "Magnetic Floating Bed",
+        "cost": 1600000,
+        "boost": 8000,
+        "default quantity": 1
+    },
+    "All of the Pokemon": {
+        "name": "All of the Pokemon",
+        "cost": 1510000,
+        "boost": 8090,
+        "default quantity": 1
+    },
+    "Ferrari Enzo": {
+        "name": "Ferrari Enzo",
+        "cost": 1325000,
+        "boost": 5500,
+        "default quantity": 7
+    },
+    "The Ultimate Ultimate Weapon": {
+        "name": "The Ultimate Ultimate Weapon",
+        "cost": 1230000,
+        "boost": 4920,
+        "default quantity": 6
+    },
+    "Darth Vader's Helmet": {
+        "name": "Darth Vader's Helmet",
+        "cost": 1138000,
+        "boost": 7486,
+        "default quantity": 1
+    },
+    "Crisp $1,000,000 bill": {
+        "name": "Crisp $1,000,000 bill",
+        "cost": 999999,
+        "boost": 0,
+        "default quantity": 100
+    },
+    "Tank": {
+        "name": "Tank",
+        "cost": 858000,
+        "boost": 3750,
+        "default quantity": 10
+    },
+    "Lightsaber": {
+        "name": "Lightsaber",
+        "cost": 300000,
+        "boost": 1977,
+        "default quantity": 6
+    },
+    "Pet Dragon": {
+        "name": "Pet Dragon",
+        "cost": 630000,
+        "boost": 3030,
+        "default quantity": 5
+    },
+    "Smash Ball": {
+        "name": "Smash Ball",
+        "cost": 400000,
+        "boost": 1500,
+        "default quantity": 6
+    },
+    "Legolas' Bow": {
+        "name": "Legolas' Bow",
+        "cost": 301800,
+        "boost": 2110,
+        "default quantity": 1
+    },
+    "Phaser Rifle": {
+        "name": "Phaser Rifle",
+        "cost": 200000,
+        "boost": 1000,
+        "default quantity": 1
+    },
+    "Six-Shooter": {
+        "name": "Six-Shooter",
+        "cost": 130364,
+        "boost": 600,
+        "default quantity": 6
+    },
+    "Kylo Ren's Helmet": {
+        "name": "Kylo Ren's Helmet",
+        "cost": 200000,
+        "boost": 1350,
+        "default quantity": 1
+    },
+    "Nuclear Bomb": {
+        "name": "Nuclear Bomb",
+        "cost": 500235,
+        "boost": 2390,
+        "default quantity": 5
+    },
+    "Bowcaster": {
+        "name": "Bowcaster",
+        "cost": 155893,
+        "boost": 563,
+        "default quantity": 10
+    },
+    "Genesis Device": {
+        "name": "Genesis Device",
+        "cost": 765482,
+        "boost": 4570,
+        "default quantity": 1
+    },
+    "A bad feeling about this": {
+        "name": "A bad feeling about this",
+        "cost": 166830,
+        "boost": 1138,
+        "default quantity": 1
+    },
+    "Death Star": {
+        "name": "Death Star",
+        "cost": 1344339,
+        "boost": 7324,
+        "default quantity": 2
+    },
+    "Rocket": {
+        "name": "Rocket",
+        "cost": 100000,
+        "boost": 500,
+        "default quantity": 10
+    },
+    "Ring of Power": {
+        "name": "Ring of Power",
+        "cost": 2963500,
+        "boost": 19776,
+        "default quantity": 19
+    },
+    "Stormbreaker": {
+        "name": "Stormbreaker",
+        "cost": 1375947,
+        "boost": 10000,
+        "default quantity": 1
+    },
+    "Medpack": {
+        "name": "Medpack",
+        "cost": 100000,
+        "boost": 500,
+        "default quantity": 10
+    },
+    "Mario's Hat": {
+        "name": "Mario's Hat",
+        "cost": 1019358,
+        "boost": 5342,
+        "default quantity": 1
+    },
+    "Blender (the program)": {
+        "name": "Blender (the program)",
+        "cost": 530000,
+        "boost": 2140,
+        "default quantity": 10
+    },
+    "iPhone XR": {
+        "name": "iPhone XR",
+        "cost": 300000,
+        "boost": 1215,
+        "default quantity": 1
+    },
+    "Stormtrooper Helmet": {
+        "name": "Stormtrooper Helmet",
+        "cost": 13630,
+        "boost": 70,
+        "default quantity": 10
+    },
+    "Sandwitch": {
+        "name": "Sandwitch",
+        "cost": 22414,
+        "boost": 84,
+        "default quantity": 10
+    },
+    "Oculus": {
+        "name": "Oculus",
+        "cost": 39999,
+        "boost": 199,
+        "default quantity": 10
+    },
+    "Shards of Narsil": {
+        "name": "Shards of Narsil",
+        "cost": 20000,
+        "boost": 97,
+        "default quantity": 6
+    },
+    "Batarang": {
+        "name": "Batarang",
+        "cost": 14645,
+        "boost": 70,
+        "default quantity": 10
+    },
+    "Sword": {
+        "name": "Sword",
+        "cost": 10000,
+        "boost": 51,
+        "default quantity": 100
+    },
+    "Water Bottle": {
+        "name": "Water Bottle",
+        "cost": 10000,
+        "boost": 49,
+        "default quantity": 10
+    },
+    "Easy Button": {
+        "name": "Easy Button",
+        "cost": 667186,
+        "boost": 2839,
+        "default quantity": 10
+    },
+    "Blender (for food)": {
+        "name": "Blender (for food)",
+        "cost": 10000,
+        "boost": 43,
+        "default quantity": 7
+    },
+    "The Piece of Resistance": {
+        "name": "The Piece of Resistance",
+        "cost": 998520,
+        "boost": 4950,
+        "default quantity": 1
+    },
+    "Shield": {
+        "name": "Shield",
+        "cost": 5000,
+        "boost": 25,
+        "default quantity": 200
+    },
+    "Shark Repellent Bat Spray": {
+        "name": "Shark Repellent Bat Spray",
+        "cost": 1996,
+        "boost": 10,
+        "default quantity": 4
+    },
+    "Kirk's Glasses": {
+        "name": "Kirk's Glasses",
+        "cost": 957440,
+        "boost": 4329,
+        "default quantity": 1
+    },
+    "Popcorn": {
+        "name": "Popcorn",
+        "cost": 1000,
+        "boost": 5,
+        "default quantity": 100
+    },
+    "Book": {
+        "name": "Book",
+        "cost": 451,
+        "boost": 2,
+        "default quantity": 10
+    },
+    "Cookie": {
+        "name": "Cookie",
+        "cost": 100,
+        "boost": 3,
+        "default quantity": 1
+    },
+    "Lego Brick": {
+        "name": "Lego Brick",
+        "cost": 200,
+        "boost": 1,
+        "default quantity": 100
+    },
+    "Bug": {
+        "name": "Bug",
+        "cost": 1,
+        "boost": -1,
+        "default quantity": 128
+    },
+    "Arc Reactor": {
+        "name": "Arc Reactor",
+        "cost": 59637044043,
+        "boost": 141467051,
+        "default quantity": 1
+    },
+    "Kryptonite": {
+        "name": "Kryptonite",
+        "cost": 2110089696934650,
+        "boost": 4096534023712,
+        "default quantity": 1
+    },
+    "Air Force One": {
+        "name": "Air Force One",
+        "cost": 83250280290413900,
+        "boost": 151941677102307,
+        "default quantity": 1
+    },
+    "Cheat": {
+        "name": "Cheat",
+        "cost": 1,
+        "boost": 1,
+        "default quantity": 1
+    },
+    "Ice Cream": {
+        "name": "Ice Cream",
+        "cost": 40896568606,
+        "boost": 97793577,
+        "default quantity": 10
+    },
+    "Klondike Bar": {
+        "name": "Klondike Bar",
+        "cost": 4275149189933540000,
+        "boost": 7331994574249420,
+        "default quantity": 1
+    },
+    "Time Machine": {
+        "name": "Time Machine",
+        "cost": 83745097494464,
+        "boost": 172216610960,
+        "default quantity": 1
+    },
+    "Bribe": {
+        "name": "Bribe",
+        "cost": 1000000,
+        "boost": 0,
+        "default quantity": 1
+    },
+    "Nuclear Fireworks": {
+        "name": "Nuclear Fireworks",
+        "cost": 81247450573750,
+        "boost": 167173305334,
+        "default quantity": 1
+    },
+    "Meme": {
+        "name": "Meme",
+        "cost": 1755841378694,
+        "boost": 3886619829,
+        "default quantity": 1
+    },
+    "Bigfoot": {
+        "name": "Bigfoot",
+        "cost": 79837291968785,
+        "boost": 164324651505,
+        "default quantity": 1
+    },
+    "Area-51": {
+        "name": "Area-51",
+        "cost": 5704058330541,
+        "boost": 12338782071,
+        "default quantity": 1
+    },
+    "Loch Ness Monster": {
+        "name": "Loch Ness Monster",
+        "cost": 2221819257185,
+        "boost": 4895303336,
+        "default quantity": 1
+    },
+    "The Moon": {
+        "name": "The Moon",
+        "cost": 839548670437,
+        "boost": 1885876413,
+        "default quantity": 1
+    },
+    "A True Cake": {
+        "name": "A True Cake",
+        "cost": 1248529473245030,
+        "boost": 2446152366149,
+        "default quantity": 5
+    },
+    "MissingNo": {
+        "name": "MissingNo",
+        "cost": 55905021527,
+        "boost": 132795976,
+        "default quantity": 1
+    },
+    "Dog": {
+        "name": "Dog",
+        "cost": 17728,
+        "boost": 62,
+        "default quantity": 3
+    },
+    "Airpods": {
+        "name": "Airpods",
+        "cost": 37910263806,
+        "boost": 90799614,
+        "default quantity": 2
+    },
+    "Iron Man Suit": {
+        "name": "Iron Man Suit",
+        "cost": 1858055186797720,
+        "boost": 3615205690620,
+        "default quantity": 2
+    },
+    "Debug Byte": {
+        "name": "Debug Byte",
+        "cost": 1,
+        "boost": 0,
+        "default quantity": 256
+    },
+    "Knight": {
+        "name": "Knight",
+        "cost": 10000,
+        "boost": 35,
+        "default quantity": 10
+    },
+    "An Easy Win": {
+        "name": "An Easy Win",
+        "cost": 100000,
+        "boost": 330,
+        "default quantity": 3
+    },
+    "Nuclear Missile": {
+        "name": "Nuclear Missile",
+        "cost": 5900000,
+        "boost": 17393,
+        "default quantity": 10
+    },
+    "Popped Popcorn": {
+        "name": "Popped Popcorn",
+        "cost": 10000,
+        "boost": 35,
+        "default quantity": 100
+    },
+    "A Great Disguise": {
+        "name": "A Great Disguise",
+        "cost": 10000000,
+        "boost": 29076,
+        "default quantity": 2
+    },
+    "Nuclear War": {
+        "name": "Nuclear War",
+        "cost": 1000000,
+        "boost": 3092,
+        "default quantity": 2
+    },
+    "Blender (the world)": {
+        "name": "Blender (the world)",
+        "cost": 279,
+        "boost": 1,
+        "default quantity": 12
+    },
+    "Ham": {
+        "name": "Ham",
+        "cost": 300,
+        "boost": 1,
+        "default quantity": 1
+    },
+    "The Avengers' Weapons": {
+        "name": "The Avengers' Weapons",
+        "cost": 10708070000,
+        "boost": 26359853,
+        "default quantity": 1
+    },
+    "Thor": {
+        "name": "Thor",
+        "cost": 2011201700,
+        "boost": 5139880,
+        "default quantity": 1
+    },
+    "Debug Kilobyte": {
+        "name": "Debug Kilobyte",
+        "cost": 1000,
+        "boost": 4,
+        "default quantity": 256
+    },
+    "Infinite Power": {
+        "name": "Infinite Power",
+        "cost": 66666666,
+        "boost": 184738,
+        "default quantity": 1
+    },
+    "Anduril": {
+        "name": "Anduril",
+        "cost": 150000,
+        "boost": 490,
+        "default quantity": 1
+    },
+    "KHAAAAAAAAAAN": {
+        "name": "KHAAAAAAAAAAN",
+        "cost": 100000000,
+        "boost": 274354,
+        "default quantity": 1
+    },
+    "Space Stone":{
+        "name": "Space Stone",
+        "cost": 1000000,
+        "boost": 100000,
+        "default quantity": 1
+    },
+    "Time Stone":{
+        "name": "Time Stone",
+        "cost": 1000000,
+        "boost": 100000,
+        "default quantity": 1
+    },
+    "Reality Stone":{
+        "name": "Reality Stone",
+        "cost": 1000000,
+        "boost": 100000,
+        "default quantity": 1
+    },
+    "Mind Stone":{
+        "name": "Mind Stone",
+        "cost": 1000000,
+        "boost": 100000,
+        "default quantity": 1
+    },
+    "Power Stone":{
+        "name": "Power Stone",
+        "cost": 1000000,
+        "boost": 100000,
+        "default quantity": 1
+    },
+    "Soul Stone":{
+        "name": "Soul Stone",
+        "cost": 1000000,
+        "boost": 100000,
+        "default quantity": 1
+    }
+}
