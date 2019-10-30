@@ -1,29 +1,36 @@
-from . import items, store, users
+from . import db, items, store, users
 
 class ProCoin:
     items: items.ItemInterface
+    store: store.Store
     users: users.UserInterface
 
     def __init__(self, item_filename: str, user_filename: str) -> None:
         self.item_filename = item_filename
         self.user_filename = user_filename
 
+    def load_all(self) -> None:
+        self.load_item_file()
+        self.store = store.Store(self.items)
+        self.load_user_file()
+
     # Loads the item file from the disk. This should probably modify
     # ProCoin.items directly.
     def load_item_file(self) -> None:
-        raise NotImplementedError
+        self.items = items.ItemInterface.from_dict(db.load(self.item_filename))
 
     # Loads the users file from the disk. This should probably modify
     # ProCoin.users directly.
     def load_user_file(self) -> None:
-        raise NotImplementedError
+        data = db.load(self.user_filename)
+        self.users = users.UserInterface.from_dict(self.store, data)
 
     # Saves the users file to the disk.
     # WARNING: Blocking operations (file writing) on the main thread is
     # probably not a good idea! Calling this in a thread with the result of
     # UserInterface.to_dict() might be a better idea at some later stage.
     def save_user_file(self) -> None:
-        raise NotImplementedError
+        db.save(self.user_filename, self.users.to_dict())
 
     # Buys an item from the store.
     def buy(self, user_id: str, item_string: str, qty: int) -> bool:
@@ -49,5 +56,6 @@ class ProCoin:
         user.balance -= amount
 
     # Shows the store(?)
+    # I think this does what it is meant to.
     def show_store(self) -> str:
-        raise NotImplementedError
+        return self.store.store_string

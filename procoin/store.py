@@ -21,7 +21,7 @@ class Store:
         for item, in_stock in self.current_stock.items():
             # The diamond prefix is handled in items.py, no need to worry about
             # it here.
-            store_string += f"`{in_stock}` {item.item_string}\n"
+            store_string += f"`{in_stock}x` {item.item_string}\n"
         return store_string
 
     # Returns a boolean (booleans are subclasses of ints anyway).
@@ -50,5 +50,5 @@ class Store:
 
     def _generateStore(self) -> None:
         sizeable_items = self.items.filter_by(self._is_sizeable)
-        for item in sizeable_items:
+        for item in sorted(sizeable_items, key=lambda i : i.cost):
             self.current_stock[item] = item.default_qty
