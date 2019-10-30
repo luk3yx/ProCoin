@@ -12,14 +12,12 @@ class User:
         self.inventory: Dict[str, int] = {}
 
     # Convert the User object to a dict.
-    def to_dict(self) -> Dict[str, Union[str, int, Dict[str, int]]]:
-        return {'id': self.id, 'balance': self.balance,
-                'inventory': self.inventory}
+    def to_dict(self) -> Dict[str, Union[int, Dict[str, int]]]:
+        return {'balance': self.balance, 'inventory': self.inventory}
 
     # Create a User object from a dict.
     @classmethod
-    def from_dict(cls, store: _Store, data: Dict[Any, Any]):
-        id = data['id']
+    def from_dict(cls, store: _Store, id: str, data: Dict[Any, Any]):
         balance = data['balance']
         inventory = data['inventory']
         assert isinstance(id, str)
@@ -57,8 +55,18 @@ class User:
 
 
 class UserInterface:
-    def __init__(self, users: Dict[str, User]) -> None:
+    def __init__(self, store: _Store, users: Dict[str, User]) -> None:
+        self.store = store
         self.users = users
+
+    def to_dict(self) -> Dict[str, Dict[str, Union[int, Dict[str, int]]]]:
+        return {k: v.to_dict() for k, v in self.users.items()}
+
+    @classmethod
+    def from_dict(cls, store: _Store,
+            users: Dict[str, Dict[str, Union[int, Dict[str, int]]]]):
+        new_users = {k: User.from_dict(store, k, v) for k, v in users.items()}
+        return cls(store, new_users)
 
     def find_by_id(self, user_id: str) -> Optional[User]:
         return self.users.get(user_id)
