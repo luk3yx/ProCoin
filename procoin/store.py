@@ -67,6 +67,7 @@ class Store:
         return (item.cost < big_item_bound)
 
     def _generateStore(self) -> None:
+        self.current_stock: Dict[Item, int] = {}
         for item in random.sample(self.small_items, small_items_stock):
             self.current_stock[item] = item.default_qty
         for item in random.sample(self.big_items, big_items_stock):
