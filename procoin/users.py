@@ -7,7 +7,7 @@ class User:
     def __init__(self, store: _Store, id: str) -> None:
         self.store = store
         self.id: str = id
-        self.boost: int = 0
+        self.boost: int = 1
         self.balance: int = 0
         self.inventory: Dict[str, int] = {}
 
@@ -33,7 +33,7 @@ class User:
     # updated and the delta is not easily obtainable.
     def recalc_boost(self) -> None:
         ii: items.ItemInterface = self.store.items
-        boost: int = 0
+        boost: int = 1
         for item_id, qty in self.inventory.items():
             boost += ii.get_boost(item_id) * qty
         self.boost = boost
