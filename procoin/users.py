@@ -55,6 +55,7 @@ class User:
 
 
 class UserInterface:
+    __slots__ = ('store', 'users')
     def __init__(self, store: _Store, users: Dict[str, User]) -> None:
         self.store = store
         self.users = users

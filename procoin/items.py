@@ -65,6 +65,7 @@ class Item:
 # An ItemInterface will allow the program to work with all
 # the items that exist.
 class ItemInterface:
+    __slots__ = ('items',)
     # Items: {"item_id": <Item object at ...>}
     def __init__(self, items: Dict[str, Item]) -> None:
         self.items = items

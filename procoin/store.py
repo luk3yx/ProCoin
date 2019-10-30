@@ -13,13 +13,13 @@ class Store:
 
     def __init__(self, items: ItemInterface) -> None:
         self.items = items
-        
-        self.big_items: List[Item] =\
+
+        self.big_items: List[Item] = \
             list(self.items.filter_by(self._is_bigitem))
-            
-        self.small_items: List[Item] =\
+
+        self.small_items: List[Item] = \
             list(self.items.filter_by(self._not_bigitem))
-           
+
         self.current_stock: Dict[Item, int] = {}
         self._generateStore()
 
@@ -57,18 +57,24 @@ class Store:
         return True
 
     def _sort_key(self, item: Item) -> int:
-        return (item.cost)
+        return item.cost
 
     def _is_bigitem(self, item: Item) -> bool:
         # Item class could add interface for getting cost etc.
-        return (item.cost >= big_item_bound)
+        return item.cost >= big_item_bound
 
     def _not_bigitem(self, item: Item) -> bool:
-        return (item.cost < big_item_bound)
+        return item.cost < big_item_bound
 
     def _generateStore(self) -> None:
-        self.current_stock: Dict[Item, int] = {}
-        for item in random.sample(self.small_items, small_items_stock):
+        self.current_stock.clear()
+
+        # Ensure that random.sample() doesn't error if there are very few
+        # items.
+        small_items = min(len(self.small_items), small_items_stock)
+        big_items = min(len(self.big_items), big_items_stock)
+
+        for item in random.sample(self.small_items, small_items):
             self.current_stock[item] = item.default_qty
-        for item in random.sample(self.big_items, big_items_stock):
+        for item in random.sample(self.big_items, big_items):
             self.current_stock[item] = item.default_qty
