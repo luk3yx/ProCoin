@@ -1,14 +1,25 @@
 import random
-from typing import Dict
+from typing import Dict, List
 
 # Local imports
 from .items import Item, ItemInterface
 
+small_items_stock = 6
+big_items_stock = 3
+big_item_bound = 0x7fffffff
+
 class Store:
-    __slots__ = ('items', 'current_stock')
+    __slots__ = ('items', 'current_stock', 'small_items', 'big_items')
 
     def __init__(self, items: ItemInterface) -> None:
         self.items = items
+        
+        self.big_items: List[Item] =\
+            list(self.items.filter_by(self._is_bigitem))
+            
+        self.small_items: List[Item] =\
+            list(self.items.filter_by(self._not_bigitem))
+           
         self.current_stock: Dict[Item, int] = {}
         self._generateStore()
 
@@ -18,9 +29,10 @@ class Store:
     @property
     def store_string(self) -> str:
         store_string = ""
-        for item, in_stock in self.current_stock.items():
+        for item in sorted(self.current_stock.keys(), key=self._sort_key):
             # The diamond prefix is handled in items.py, no need to worry about
             # it here.
+            in_stock: int = self.current_stock[item]
             store_string += f"`{in_stock}x` {item.item_string}\n"
         return store_string
 
@@ -44,11 +56,18 @@ class Store:
 
         return True
 
-    def _is_sizeable(self, item: Item) -> bool:
+    def _sort_key(self, item: Item) -> int:
+        return (item.cost)
+
+    def _is_bigitem(self, item: Item) -> bool:
         # Item class could add interface for getting cost etc.
-        return (item.cost > 5)
+        return (item.cost >= big_item_bound)
+
+    def _not_bigitem(self, item: Item) -> bool:
+        return (item.cost < big_item_bound)
 
     def _generateStore(self) -> None:
-        sizeable_items = self.items.filter_by(self._is_sizeable)
-        for item in sorted(sizeable_items, key=lambda i : i.cost):
+        for item in random.sample(self.small_items, small_items_stock):
+            self.current_stock[item] = item.default_qty
+        for item in random.sample(self.big_items, big_items_stock):
             self.current_stock[item] = item.default_qty
