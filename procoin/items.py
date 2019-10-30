@@ -1,13 +1,12 @@
 from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, Union
 
-# TODO: Move these to a different file.
-symbol = '💰'
+# TODO: Move this to a different file.
 def format_currency(amount: int) -> str:
-    return f'{amount:,}'
+    return f'{amount:,} 💰'
 
 prefixes: Tuple[Tuple[int, str], ...] = (
-    (100_000_000, '💎'),
-    (10_000_000, '$$'),
+    (2 ** 32 - 1, '💎'),
+    (1_000_000_000, '$$'),
     (1_000_000, '$'),
 )
 class Item:
@@ -23,16 +22,19 @@ class Item:
     @property
     def item_string(self) -> str:
         res = ''
-        # Get a prefix for expensive items.
-        for min_cost, prefix in prefixes:
-            if self.cost >= min_cost:
-                res = f'{prefix} '
-                break
+        if self.default_qty:
+            # Get a prefix for expensive items.
+            for min_cost, prefix in prefixes:
+                if self.cost >= min_cost:
+                    res = f'**{prefix}** '
+                    break
+        else:
+            # Items no longer sold get their own prefix.
+            res = '**V** '
 
-        res += f'{self.name} ({format_currency(self.cost)} {symbol}'
+        res += f'{self.name} ({format_currency(self.cost)}'
         if self.boost:
-            res += f', provides a boost of {format_currency(self.boost)}' \
-                   f' {symbol}'
+            res += f', provides a boost of {format_currency(self.boost)}'
         return res + ')'
 
     def to_dict(self) -> Dict[str, Union[str, int]]:
@@ -47,8 +49,7 @@ class Item:
         name = data['name']
         cost = data['cost']
         boost = data['boost']
-        default_qty = data.get('default_qty') or \
-                      data.get('default quantity', 10)
+        default_qty = data.get('default_qty', data.get('default quantity', 0))
         assert isinstance(id, str)
         assert isinstance(name, str)
         assert isinstance(cost, int)
