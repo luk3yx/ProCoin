@@ -19,6 +19,10 @@ class Item:
         self.boost = boost
         self.default_qty = default_qty
 
+    def __repr__(self) -> str:
+        cls = type(self)
+        return f'<{cls.__module__}.{cls.__name__} {self.item_string}>'
+
     @property
     def item_string(self) -> str:
         res = ''
@@ -73,10 +77,22 @@ class ItemInterface:
     def get_item(self, item_id: str) -> Item:
         return self.items[item_id]
 
+    @staticmethod
+    def _item(item: str) -> str:
+        return item.casefold().strip().replace("'", '').replace('’', '')
+
     # Get an itemString, which may not be an exact match,
     # an return the Item object if it exists.
-    def lookup(self, item_string: str) -> Item:
-        raise NotImplementedError
+    def lookup(self, item_string: str) -> Optional[Item]:
+        # For testing, item strings starting with hashes are interpreted as IDs
+        if item_string.startswith('#'):
+            return self.items.get(item_string[1:])
+
+        item_string = self._item(item_string)
+        for item in self.items.values():
+            if item_string == self._item(item.name):
+                return item
+        return None
 
     # Get an item's name from its ID.
     def get_name(self, item_id: str) -> str:
