@@ -40,15 +40,15 @@ class User:
 
     # Buy an item from the store.
     def buy_item(self, item: items.Item, qty: int) -> bool:
-        if qty < 0:
+        if qty < 1:
             return False
 
         success = self.store.buy(item, qty)
         if success:
             if item.id in self.inventory:
-                self.inventory[item.id] += 1
+                self.inventory[item.id] += qty
             else:
-                self.inventory[item.id] = 1
+                self.inventory[item.id] = qty
             self.boost += item.boost * qty
 
         return success

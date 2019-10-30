@@ -74,8 +74,8 @@ class ItemInterface:
         return self.items[item_id]
 
     # Get an itemString, which may not be an exact match,
-    # an return the item's ID if it exists.
-    def lookup_id(self, item_string: str) -> int:
+    # an return the Item object if it exists.
+    def lookup(self, item_string: str) -> Item:
         raise NotImplementedError
 
     # Get an item's name from its ID.
