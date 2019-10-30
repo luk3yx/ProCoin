@@ -9,10 +9,10 @@ class User:
         self.id: str = id
         self.boost: int = 0
         self.balance: int = 0
-        self.inventory: Dict[int, int] = {}
+        self.inventory: Dict[str, int] = {}
 
     # Convert the User object to a dict.
-    def to_dict(self) -> Dict[str, Union[str, int, Dict[int, int]]]:
+    def to_dict(self) -> Dict[str, Union[str, int, Dict[str, int]]]:
         return {'id': self.id, 'balance': self.balance,
                 'inventory': self.inventory}
 
