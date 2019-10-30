@@ -43,7 +43,8 @@ class Item:
         name = data['name']
         cost = data['cost']
         boost = data['boost']
-        default_qty = data['default_qty']
+        default_qty = data.get('default_qty') or \
+                      data.get('default quantity', 10)
         assert isinstance(id, int)
         assert isinstance(name, str)
         assert isinstance(cost, int)
