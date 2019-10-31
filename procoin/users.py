@@ -66,10 +66,11 @@ class UserInterface:
         new_users = {k: User.from_dict(store, k, v) for k, v in users.items()}
         return cls(store, new_users)
 
-    def find_by_id(self, user_id: str) -> Optional[User]:
-        return self.users.get(user_id)
+    def find_by_id(self, user_id: Union[str, int]) -> Optional[User]:
+        return self.users.get(str(user_id))
 
-    def get_or_create(self, user_id: str) -> User:
+    def get_or_create(self, user_id: Union[str, int]) -> User:
+        user_id = str(user_id)
         if user_id not in self.users:
-            self.users[user_id] =  User(self.store, user_id)
+            self.users[user_id] = User(self.store, user_id)
         return self.users[user_id]
