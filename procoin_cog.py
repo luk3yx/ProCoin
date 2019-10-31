@@ -52,19 +52,18 @@ class BotInterface(Cog):
 
     @commands.command(aliases=['buy'])
     async def purchase(self, ctx, *parameters: str) -> None:
-        if len(parameters) < 2:
-            await ctx.send('Not enough parameters to purchase <item> <qty>.')
+        if len(parameters) < 1:
+            await ctx.send("Idk what you want to purchase. :shrug:")
             return
 
         user_id = ctx.author.id
         try:
             qty = int(parameters[-1])
-            parameters.pop(-1)
+            item_string = ' '.join(parameters[:-1])
         except ValueError:
             qty = 1
+            item_string = ' '.join(parameters)
             
-
-        item_string = ' '.join(parameters[:-1])
         try:
             total_cost = self.pc.buy(user_id, item_string, qty)
         except Error as e:
