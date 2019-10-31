@@ -59,9 +59,10 @@ class BotInterface(Cog):
         user_id = ctx.author.id
         try:
             qty = int(parameters[-1])
+            parameters.pop(-1)
         except ValueError:
-            await ctx.send('Quantity must be an integer.')
-            return
+            qty = 1
+            
 
         item_string = ' '.join(parameters[:-1])
         try:
