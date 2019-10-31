@@ -40,12 +40,12 @@ class Store:
 
     @property
     def store_string(self) -> str:
-        store_string = ""
+        store_string = ''
         for item in sorted(self.current_stock.keys(), key=self._sort_key):
             # The diamond prefix is handled in items.py, no need to worry about
             # it here.
             in_stock: int = self.current_stock[item]
-            store_string += f"`{in_stock}x` {item.item_string}\n"
+            store_string += f'`{in_stock}x` {item.item_string}\n'
         return store_string
 
     # Returns a boolean (booleans are subclasses of ints anyway).
@@ -58,8 +58,8 @@ class Store:
         in_stock = self.current_stock.get(item, 0)
         if in_stock < qty:
             if in_stock:
-                raise Error(f"The store only has {in_stock} `{item}`s "
-                            f"available for purchase!")
+                raise Error(f'The store only has {in_stock} `{item}`s '
+                            f'available for purchase!')
             else:
                 raise ItemNotFoundError(item)
 
