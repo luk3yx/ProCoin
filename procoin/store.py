@@ -16,7 +16,7 @@ class Error(Exception):
 # here.
 class ItemNotFoundError(Error):
     def __str__(self):
-        item_name = str(self.args[0] or 'Unknown item')
+        item_name = str(self.args[0] if self.args else 'Unknown item')
         return f"Couldn't find any `{item_name}`s in the store!"
 
 class Store:
