@@ -84,7 +84,7 @@ class BotInterface(Cog):
         next_update = self.pc.store.last_update + 3600
         delay = round(max(next_update - time.time(), 0) / 60)
         msg: str = self.pc.store.store_string
-        msg += f'\n\n*The store resets in {delay} minute{_plural(delay)}.*'
+        msg += f'\r\n*The store resets in {delay} minute{_plural(delay)}.*'
         embed = discord.Embed(title='The Store', description=msg,
                               colour=0xfdd835)
         await ctx.send(embed=embed)
