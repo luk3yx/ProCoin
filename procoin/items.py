@@ -19,6 +19,9 @@ class Item:
         self.boost = boost
         self.default_qty = default_qty
 
+    def __str__(self) -> str:
+        return self.name
+
     def __repr__(self) -> str:
         cls = type(self)
         return f'<{cls.__module__}.{cls.__name__} {self.item_string}>'

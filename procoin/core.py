@@ -8,6 +8,7 @@ class ProCoin:
     def __init__(self, item_filename: str, user_filename: str) -> None:
         self.item_filename = item_filename
         self.user_filename = user_filename
+        self.load_all()
 
     def load_all(self) -> None:
         self.load_item_file()
@@ -32,16 +33,15 @@ class ProCoin:
     def save_user_file(self) -> None:
         db.save(self.user_filename, self.users.to_dict())
 
-    # Buys an item from the store.
-    def buy(self, user_id: str, item_string: str, qty: int) -> bool:
-        user = self.users.find_by_id(user_id)
-        if not user:
-            return False
+    # Buys an item from the store. Returns the total cost.
+    def buy(self, user_id: str, item_string: str, qty: int) -> int:
         item = self.items.lookup(item_string)
         if not item:
-            return False
+            raise store.ItemNotFoundError(item_string)
 
-        return user.buy_item(item, qty)
+        user = self.users.get_or_create(user_id)
+        user.buy_item(item, qty)
+        return item.cost * qty
 
     # Adds money to a user.
     def add_cash(self, user_id: str, amount: int) -> None:

@@ -1,14 +1,14 @@
 from typing import Any, Dict, List, Optional, Union
 from . import items
-from .store import Store as _Store
+from .store import Error, Store as _Store
 
 class User:
-    __slots__ = ('store', 'id', 'balance', 'boost')
+    __slots__ = ('store', 'id', 'balance', 'boost', 'inventory')
     def __init__(self, store: _Store, id: str) -> None:
         self.store = store
         self.id: str = id
-        self.boost: int = 1
         self.balance: int = 0
+        self.boost: int = 1
         self.inventory: Dict[str, int] = {}
 
     # Convert the User object to a dict.
@@ -39,20 +39,17 @@ class User:
         self.boost = boost
 
     # Buy an item from the store.
-    def buy_item(self, item: items.Item, qty: int) -> bool:
-        if qty < 1:
-            return False
+    def buy_item(self, item: items.Item, qty: int) -> None:
+        total_cost = item.cost * qty
+        if total_cost > self.balance:
+            raise Error("You don't have enough to buy that!")
 
-        success = self.store.buy(item, qty)
-        if success:
-            if item.id in self.inventory:
-                self.inventory[item.id] += qty
-            else:
-                self.inventory[item.id] = qty
-            self.boost += item.boost * qty
-
-        return success
-
+        self.store.buy(item, qty)
+        if item.id in self.inventory:
+            self.inventory[item.id] += qty
+        else:
+            self.inventory[item.id] = qty
+        self.boost += item.boost * qty
 
 class UserInterface:
     __slots__ = ('store', 'users')
@@ -71,3 +68,8 @@ class UserInterface:
 
     def find_by_id(self, user_id: str) -> Optional[User]:
         return self.users.get(user_id)
+
+    def get_or_create(self, user_id: str) -> User:
+        if user_id not in self.users:
+            self.users[user_id] =  User(self.store, user_id)
+        return self.users[user_id]

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import discord # type: ignore
 from discord.ext import commands # type: ignore
 import os

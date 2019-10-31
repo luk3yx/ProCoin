@@ -1,4 +1,4 @@
-import random
+import random, time
 from typing import Dict, List
 
 # Local imports
@@ -8,8 +8,20 @@ small_items_stock = 6
 big_items_stock = 3
 big_item_bound = 0x7fffffff
 
+# A base error.
+class Error(Exception):
+    pass
+
+# Item not found messages are created in two separate files, unify the message
+# here.
+class ItemNotFoundError(Error):
+    def __str__(self):
+        item_name = str(self.args[0] or 'Unknown item')
+        return f"Couldn't find any `{item_name}`s in the store!"
+
 class Store:
-    __slots__ = ('items', 'current_stock', 'small_items', 'big_items')
+    __slots__ = ('items', 'current_stock', 'small_items', 'big_items',
+                 'last_update')
 
     def __init__(self, items: ItemInterface) -> None:
         self.items = items
@@ -21,7 +33,7 @@ class Store:
             list(self.items.filter_by(self._not_bigitem))
 
         self.current_stock: Dict[Item, int] = {}
-        self._generateStore()
+        self._generate_store()
 
     def __str__(self) -> str:
         return self.store_string
@@ -37,15 +49,19 @@ class Store:
         return store_string
 
     # Returns a boolean (booleans are subclasses of ints anyway).
-    def buy(self, item: Item, qty: int) -> bool:
+    def buy(self, item: Item, qty: int) -> None:
         # Can't request less than 1 item.
         if qty < 1:
-            return False
+            raise Error('You must buy at least one item!')
 
         # Make sure the item(s) are in stock.
         in_stock = self.current_stock.get(item, 0)
         if in_stock < qty:
-            return False
+            if in_stock:
+                raise Error(f"The store only has {in_stock} `{item}`s "
+                            f"available for purchase!")
+            else:
+                raise ItemNotFoundError(item)
 
         # Remove the item(s) from the stock.
         self.current_stock[item] -= qty
@@ -53,8 +69,6 @@ class Store:
         # Remove out-of-stock items from the store.
         if self.current_stock[item] == 0:
             del self.current_stock[item]
-
-        return True
 
     def _sort_key(self, item: Item) -> int:
         return item.cost
@@ -66,7 +80,7 @@ class Store:
     def _not_bigitem(self, item: Item) -> bool:
         return item.cost < big_item_bound
 
-    def _generateStore(self) -> None:
+    def _generate_store(self) -> None:
         self.current_stock.clear()
 
         # Ensure that random.sample() doesn't error if there are very few
@@ -78,3 +92,5 @@ class Store:
             self.current_stock[item] = item.default_qty
         for item in random.sample(self.big_items, big_items):
             self.current_stock[item] = item.default_qty
+
+        self.last_update = time.time()
