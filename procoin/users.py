@@ -1,14 +1,16 @@
+import time
 from typing import Any, Dict, List, Optional, Union
 from . import items
 from .store import Error, Store as _Store
 
 class User:
-    __slots__ = ('store', 'id', 'balance', 'boost', 'inventory')
+    __slots__ = ('store', 'id', 'balance', 'boost', 'inventory', '_next_boost')
     def __init__(self, store: _Store, id: str) -> None:
         self.store = store
         self.id: str = id
         self.balance: int = 0
         self.boost: int = 1
+        self._next_boost: float = 0
         self.inventory: Dict[str, int] = {}
 
     # Convert the User object to a dict.
@@ -51,6 +53,13 @@ class User:
         else:
             self.inventory[item.id] = qty
         self.boost += item.boost * qty
+
+    # Adds the boost if called 20 seconds after the last boost.
+    def add_boost(self) -> None:
+        t = time.time()
+        if t >= self._next_boost + 20:
+            self.balance += self.boost
+            self._next_boost = t + 20
 
 class UserInterface:
     __slots__ = ('store', 'users')

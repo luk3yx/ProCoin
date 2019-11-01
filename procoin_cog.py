@@ -1,11 +1,14 @@
 import discord # type: ignore
 from discord.ext import commands, tasks # type: ignore
-from typing import Any, Tuple, Union, TYPE_CHECKING
+from typing import Any, Optional, Tuple, Union, TYPE_CHECKING
 import os, time
 
 # TODO: Something better
 if TYPE_CHECKING:
-    Cog = object
+    class Cog:
+        @classmethod
+        def listener(self, name: Optional[str] = None):
+            return lambda func : func
 else:
     from discord.ext.commands import Cog
 
@@ -50,13 +53,24 @@ class BotInterface(Cog):
                 await ctx.message.add_reaction('✅')
                 await ctx.message.remove_reaction('⌛', self.bot.user)
 
+    @commands.command(aliases=['money'])
+    async def bal(self, ctx) -> None:
+        user = self.pc.users.get_or_create(ctx.author.id)
+        await ctx.send(f'{ctx.author.mention} has '
+                       f'{format_currency(user.balance)}')
+
+    @commands.command()
+    async def boost(self, ctx) -> None:
+        user = self.pc.users.get_or_create(ctx.author.id)
+        await ctx.send(f'{ctx.author.mention} has a boost of '
+                       f'{format_currency(user.boost)}')
+
     @commands.command(aliases=['buy'])
     async def purchase(self, ctx, *parameters: str) -> None:
         if len(parameters) < 1:
             await ctx.send("Idk what you want to purchase. :shrug:")
             return
 
-        user_id = ctx.author.id
         try:
             qty = int(parameters[-1])
             item_string = ' '.join(parameters[:-1])
@@ -65,22 +79,17 @@ class BotInterface(Cog):
             item_string = ' '.join(parameters)
 
         try:
-            total_cost = self.pc.buy(user_id, item_string, qty)
+            total_cost = self.pc.buy(ctx.author.id, item_string, qty)
         except Error as e:
             await ctx.send(str(e))
             return
 
-        await ctx.send(f'<@{user_id}> bought {qty}'\
+        await ctx.send(f'{ctx.author.mention} bought {qty}'\
                        f' {self.pc.items.lookup(item_string)}{_plural(qty)}'
                        f' for {format_currency(total_cost)}.')
 
     @commands.command()
-    async def store(self, ctx, *parameters: str) -> None:
-        if parameters:
-            await ctx.send(f'This command takes zero parameters ' \
-                           f'(not {len(parameters)}).')
-            return
-
+    async def store(self, ctx) -> None:
         next_update = self.pc.store.last_update + 3600
         delay = round(max(next_update - time.time(), 0) / 60)
         msg: str = self.pc.store.store_string
@@ -99,6 +108,13 @@ class BotInterface(Cog):
 
         # Regenerate the store
         self.pc.store._generate_store()
+
+    # Call User.add_boost() if required.
+    @Cog.listener()
+    async def on_message(self, message):
+        user = self.pc.users.find_by_id(message.author.id)
+        if user:
+            user.add_boost()
 
     # Save the user file (and block) when the cog is unloaded. This has to
     # block as otherwise reloads might lose data.
