@@ -63,7 +63,7 @@ class BotInterface(Cog):
         except ValueError:
             qty = 1
             item_string = ' '.join(parameters)
-            
+
         try:
             total_cost = self.pc.buy(user_id, item_string, qty)
         except Error as e:
@@ -94,7 +94,18 @@ class BotInterface(Cog):
     # Python transparently.
     @tasks.loop(minutes=60.0)
     async def __update_store(self) -> None:
+        # Save the user database (in another thread)
+        self.pc.save_user_file()
+
+        # Regenerate the store
         self.pc.store._generate_store()
+
+    # Save the user file (and block) when the cog is unloaded. This has to
+    # block as otherwise reloads might lose data.
+    def cog_unload(self) -> None:
+        print('[DEBUG] Saving user file in main thread...')
+        self.pc.save_user_file_blocking()
+        print('[DEBUG] Done.')
 
 def setup(bot):
     bot.add_cog(BotInterface(bot, os.getcwd()))

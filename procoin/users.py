@@ -45,6 +45,7 @@ class User:
             raise Error("You don't have enough to buy that!")
 
         self.store.buy(item, qty)
+        self.balance -= total_cost
         if item.id in self.inventory:
             self.inventory[item.id] += qty
         else:

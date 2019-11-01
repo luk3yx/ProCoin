@@ -26,12 +26,14 @@ class ProCoin:
         data = db.load(self.user_filename)
         self.users = users.UserInterface.from_dict(self.store, data)
 
-    # Saves the users file to the disk.
-    # WARNING: Blocking operations (file writing) on the main thread is
-    # probably not a good idea! Calling this in a thread with the result of
-    # UserInterface.to_dict() might be a better idea at some later stage.
+    # Saves the users file to the disk. The actual save operation is now done
+    # in another thread.
     def save_user_file(self) -> None:
         db.save(self.user_filename, self.users.to_dict())
+
+    # Saves the users file in the current thread.
+    def save_user_file_blocking(self) -> None:
+        db.save_blocking(self.user_filename, self.users.to_dict())
 
     # Buys an item from the store. Returns the total cost.
     def buy(self, user_id: str, item_string: str, qty: int) -> int:

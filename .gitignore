@@ -62,3 +62,6 @@ target/
 
 # Discord token
 token.txt
+
+# This is already in the repository and updating it is useless.
+users.json
