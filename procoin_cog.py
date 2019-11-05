@@ -35,6 +35,7 @@ class BotInterface(Cog, name='General commands'):
         self.bot = bot
         self.pc = ProCoin(os.path.join(directory, 'items.json'),
                           os.path.join(directory, 'users.json'))
+        self.__update_store.start()
 
     # Get a username from a User object.
     def get_username(self, user: User) -> str:
@@ -242,7 +243,7 @@ class BotInterface(Cog, name='General commands'):
         self.pc.save_user_file()
 
         # Regenerate the store
-        self.pc.store._generate_store()
+        self.pc.store.regenerate_store()
 
     # Call User.add_boost() if required.
     @Cog.listener()

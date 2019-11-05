@@ -37,7 +37,7 @@ class Store:
             list(self.items.filter_by(self._not_bigitem))
 
         self.current_stock: Dict[Item, int] = {}
-        self._generate_store()
+        # self.regenerate_store()
 
     def __str__(self) -> str:
         return self.store_string
@@ -98,7 +98,7 @@ class Store:
     def _not_bigitem(self, item: Item) -> bool:
         return item.stockable and item.cost < big_item_bound
 
-    def _generate_store(self) -> None:
+    def regenerate_store(self) -> None:
         self.current_stock.clear()
 
         # Ensure that random.sample() doesn't error if there are very few
