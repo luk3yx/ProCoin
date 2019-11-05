@@ -75,6 +75,17 @@ class ProCoin:
     # Pays a user
     def pay(self, source_uid: Union[str, int], target_uid: Union[str, int],
             amount: int) -> None:
+        if amount < 0:
+            raise Error('You cannot steal from someone!')
+        elif amount == 0:
+            raise Error('You cannot pay someone nothing!')
+
+        source_uid = str(source_uid)
+        target_uid = str(target_uid)
+        if source_uid == target_uid:
+            raise Error("I mean, you could pay yourself, but it'd do "
+                        "absolutely nothing.")
+
         try:
             self.remove_cash(source_uid, amount)
             self.add_cash(target_uid, amount)
