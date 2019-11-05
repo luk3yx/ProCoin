@@ -106,7 +106,8 @@ class User:
             # The diamond prefix is handled in items.py, no need to worry about
             # it here.
             amount = self.inventory[item]
-            inv_string += f'`{amount}x` {items.get_prefixed_name(item)}\n'
+            inv_string += f'`{amount}x` {items.get_prefixed_name(item)}: ' \
+                          f'{format_currency(items.get_boost(item))}\n'
             total_items += amount
         inv_string += f'\r\nTotal items: {total_items:,}' \
                       f'\nTotal boost: {format_currency(self.boost)}'
