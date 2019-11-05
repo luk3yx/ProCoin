@@ -141,19 +141,30 @@ class BotInterface(Cog, name='General commands'):
                               colour=0xfdd835)
         await ctx.send(embed=embed)
 
+    def _parse_item_and_quantity(self, parameters: Tuple[str, ...]) \
+            -> Tuple[str, int]:
+        if len(parameters) < 1:
+            raise commands.UserInputError
+        item_string = ' '.join(parameters)
+        try:
+            # Try finding the item string as-is for items ending in numbers
+            # such as "Area 51".
+            if self.pc.items.lookup(item_string):
+                raise ValueError
+            qty = int(parameters[-1])
+            item_string = ' '.join(parameters[:-1])
+        except ValueError:
+            qty = 1
+
+        return item_string, qty
+
     @commands.command(aliases=['purchase'], usage='<item name> [quantity]',
                       help='Purchases item(s) from the store.')
     async def buy(self, ctx, *parameters: str) -> None:
         if len(parameters) < 1:
             await ctx.send("Idk what you want to purchase. :shrug:")
             return
-
-        try:
-            qty = int(parameters[-1])
-            item_string = ' '.join(parameters[:-1])
-        except ValueError:
-            qty = 1
-            item_string = ' '.join(parameters)
+        item_string, qty = self._parse_item_and_quantity(parameters)
 
         total_cost = self.pc.buy(ctx.author.id, item_string, qty)
         await ctx.send(f'{ctx.author.mention} bought {qty}'\
@@ -168,13 +179,7 @@ class BotInterface(Cog, name='General commands'):
         if len(parameters) < 1:
             await ctx.send("Idk what you want to sell. :shrug:")
             return
-
-        try:
-            qty = int(parameters[-1])
-            item_string = ' '.join(parameters[:-1])
-        except ValueError:
-            qty = 1
-            item_string = ' '.join(parameters)
+        item_string, qty = self._parse_item_and_quantity(parameters)
 
         # Error objects are now caught in a global handler.
         sale_price = self.pc.sell(ctx.author.id, item_string, qty)
@@ -215,13 +220,7 @@ class BotInterface(Cog, name='General commands'):
         if len(parameters) < 1:
             await ctx.send("Idk what you want to give. :shrug:")
             return
-
-        try:
-            qty = int(parameters[-1])
-            item_string = ' '.join(parameters[:-1])
-        except ValueError:
-            qty = 1
-            item_string = ' '.join(parameters)
+        item_string, qty = self._parse_item_and_quantity(parameters)
 
         # Remove the @mention wrapper from the UID
         target_uid = target_uid.strip(' <@!>')

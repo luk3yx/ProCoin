@@ -53,10 +53,16 @@ class User:
     # Buy an item from the store.
     def buy_item(self, item: items.Item, qty: int) -> None:
         total_cost = item.cost * qty
+        # Only raise CannotAffordError if the store actually has enough stock,
+        # otherwise let Store.buy throw an error.
+        sane: bool = True
         if total_cost > self.balance:
-            raise CannotAffordError
+            sane = False
+            if self.store.current_stock.get(item, 0) >= qty:
+                raise CannotAffordError
 
         self.store.buy(item, qty)
+        assert sane # In case Store.buy doesn't throw an error.
         self.balance -= total_cost
         self.add_item(item, qty)
 
