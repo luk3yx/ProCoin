@@ -26,10 +26,16 @@ class Item:
         cls = type(self)
         return f'<{cls.__module__}.{cls.__name__} {self.item_string}>'
 
+    # Returns True if the item can be added to stores (default_qty > 0). This
+    # should probably have a more descriptive name.
+    @bool
+    def stockable(self) -> bool:
+        return bool(self.default_qty)
+
     @property
     def item_string(self) -> str:
         res = ''
-        if self.default_qty:
+        if self.stockable:
             # Get a prefix for expensive items.
             for min_cost, prefix in prefixes:
                 if self.cost >= min_cost:

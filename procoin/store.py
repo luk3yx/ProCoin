@@ -73,12 +73,15 @@ class Store:
     def _sort_key(self, item: Item) -> int:
         return item.cost
 
+    # If items have a default quantity of 0, they are excluded from the store.
+    # This allows items to be removed from the store without being deleted from
+    # items.json.
     def _is_bigitem(self, item: Item) -> bool:
         # Item class could add interface for getting cost etc.
-        return item.cost >= big_item_bound
+        return item.stockable and item.cost >= big_item_bound
 
     def _not_bigitem(self, item: Item) -> bool:
-        return item.cost < big_item_bound
+        return item.stockable and item.cost < big_item_bound
 
     def _generate_store(self) -> None:
         self.current_stock.clear()
