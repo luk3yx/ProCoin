@@ -141,7 +141,7 @@ class BotInterface(Cog, name='General commands'):
                               colour=0xfdd835)
         await ctx.send(embed=embed)
 
-    def _parse_item_and_quantity(self, parameters: Tuple[str, ...]) \
+    def __parse_item_and_quantity(self, parameters: Tuple[str, ...]) \
             -> Tuple[str, int]:
         if len(parameters) < 1:
             raise commands.UserInputError
@@ -164,7 +164,7 @@ class BotInterface(Cog, name='General commands'):
         if len(parameters) < 1:
             await ctx.send("Idk what you want to purchase. :shrug:")
             return
-        item_string, qty = self._parse_item_and_quantity(parameters)
+        item_string, qty = self.__parse_item_and_quantity(parameters)
 
         total_cost = self.pc.buy(ctx.author.id, item_string, qty)
         await ctx.send(f'{ctx.author.mention} bought {qty}'\
@@ -179,7 +179,7 @@ class BotInterface(Cog, name='General commands'):
         if len(parameters) < 1:
             await ctx.send("Idk what you want to sell. :shrug:")
             return
-        item_string, qty = self._parse_item_and_quantity(parameters)
+        item_string, qty = self.__parse_item_and_quantity(parameters)
 
         # Error objects are now caught in a global handler.
         sale_price = self.pc.sell(ctx.author.id, item_string, qty)
@@ -220,7 +220,7 @@ class BotInterface(Cog, name='General commands'):
         if len(parameters) < 1:
             await ctx.send("Idk what you want to give. :shrug:")
             return
-        item_string, qty = self._parse_item_and_quantity(parameters)
+        item_string, qty = self.__parse_item_and_quantity(parameters)
 
         # Remove the @mention wrapper from the UID
         target_uid = target_uid.strip(' <@!>')
