@@ -29,6 +29,20 @@ class BotInterface(Cog):
         self.pc = ProCoin(os.path.join(directory, 'items.json'),
                           os.path.join(directory, 'users.json'))
 
+    # Get a username from a User object.
+    def get_username(self, user: User) -> str:
+        try:
+            id = int(user.id)
+        except ValueError:
+            pass
+        else:
+            discord_user = self.bot.get_user(id)
+            if discord_user:
+                return discord_user.name
+
+        # Default username
+        return repr(user.id)
+
     # TODO: Permission checks
     @commands.command()
     async def reload(self, ctx, *parameters: str) -> None:
@@ -84,22 +98,24 @@ class BotInterface(Cog):
             return
         await ctx.send(f'<@{user.id}> has a boost of '
                        f'{format_currency(user.boost)}')
-                       
-    @commands.command()
+
+    @commands.command(aliases=['inventory'])
     async def inv(self, ctx, target_uid: str = '') -> None:
         target_uid = target_uid.strip(' <@!>1')
-        
+
         user: Optional[User]
         if target_uid:
             user = self.pc.users.find_by_id(target_uid)
         else:
             user = self.pc.users.get_or_create(ctx.author.id)
-            
+
         if not user:
             await ctx.send("That user doesn't have an inventory!")
             return
-        embed = discord.Embed(title=f'<@{user.id}>\'s inventory.', description=user.inv,
-            colour=0xfdd835)
+
+        username: str = self.get_username(user)
+        embed = discord.Embed(title=f"{username}'s inventory.",
+            description=user.inv, colour=0xfdd835)
         await ctx.send(embed=embed)
 
     @commands.command()

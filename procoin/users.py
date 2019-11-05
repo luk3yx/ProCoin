@@ -1,6 +1,7 @@
 import math, random, time
 from typing import Any, Dict, List, Optional, Union
 from . import items
+from .items import format_currency
 from .store import CannotAffordError, Error, Store as _Store
 
 class User:
@@ -87,13 +88,20 @@ class User:
             self.balance += self.boost
             self._next_boost = t + 20
 
-    @property    
+    # Apparently \r\n is larger than \n but smaller than \n\n.
+    @property
     def inv(self) -> str:
-        inv_string = ''
-        for item in sorted(self.inventory.keys()):
+        items = self.store.items
+        inv_string = f'Balance: {format_currency(self.balance)}\r\n'
+        total_items: int = 0
+        for item in sorted(self.inventory):
             # The diamond prefix is handled in items.py, no need to worry about
             # it here.
-            inv_string += f'`{self.inventory[item]}x` {item}\n'
+            amount = self.inventory[item]
+            inv_string += f'`{amount}x` {items.get_prefixed_name(item)}\n'
+            total_items += amount
+        inv_string += f'\r\nTotal items: {total_items:,}' \
+                      f'\nTotal boost: {format_currency(self.boost)}'
         return inv_string
 
 class UserInterface:

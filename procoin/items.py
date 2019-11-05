@@ -115,6 +115,12 @@ class ItemInterface:
         except KeyError:
             return 'Unknown Item'
 
+    def get_prefixed_name(self, item_id: str) -> str:
+        try:
+            return self.get_item(item_id).prefixed_name
+        except KeyError:
+            return '**?** Unknown Item'
+
     # Get an item's cost from its ID.
     def get_cost(self, item_id: str) -> int:
         return self.get_item(item_id).cost
