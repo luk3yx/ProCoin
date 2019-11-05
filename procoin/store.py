@@ -19,6 +19,10 @@ class ItemNotFoundError(Error):
         item_name = str(self.args[0] if self.args else 'Unknown item')
         return f"Couldn't find any `{item_name}`s in the store!"
 
+class CannotAffordError(Error):
+    def __str__(self):
+        return "You don't have enough to buy that!"
+
 class Store:
     __slots__ = ('items', 'current_stock', 'small_items', 'big_items',
                  'last_update')

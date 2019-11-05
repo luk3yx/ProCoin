@@ -1,4 +1,6 @@
 from . import db, items, store, users
+from .store import CannotAffordError, Error, ItemNotFoundError
+from typing import Union
 
 class ProCoin:
     items: items.ItemInterface
@@ -36,26 +38,37 @@ class ProCoin:
         db.save_blocking(self.user_filename, self.users.to_dict())
 
     # Buys an item from the store. Returns the total cost.
-    def buy(self, user_id: str, item_string: str, qty: int) -> int:
+    def buy(self, user_id: Union[str, int], item_string: str, qty: int) -> int:
         item = self.items.lookup(item_string)
         if not item:
-            raise store.ItemNotFoundError(item_string)
+            raise ItemNotFoundError(item_string)
 
         user = self.users.get_or_create(user_id)
         user.buy_item(item, qty)
         return item.cost * qty
 
     # Adds money to a user.
-    def add_cash(self, user_id: str, amount: int) -> None:
-        user = self.users.users[user_id]
+    def add_cash(self, user_id: Union[str, int], amount: int) -> None:
         assert amount >= 0
+        user = self.users.users[str(user_id)]
         user.balance += amount
 
     # Removes money from a user.
-    def remove_cash(self, user_id: str, amount: int) -> None:
-        user = self.users.users[user_id]
+    def remove_cash(self, user_id: Union[str, int], amount: int) -> None:
         assert amount >= 0
+        user = self.users.users[str(user_id)]
+        if amount > user.balance:
+            raise CannotAffordError
         user.balance -= amount
+
+    # Pays a user
+    def pay(self, source_uid: Union[str, int], target_uid: Union[str, int],
+            amount: int) -> None:
+        try:
+            self.remove_cash(source_uid, amount)
+            self.add_cash(target_uid, amount)
+        except KeyError as exc:
+            raise Error('Unknown user!') from exc
 
     # Shows the store(?)
     # I think this does what it is meant to.

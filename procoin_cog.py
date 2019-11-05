@@ -111,6 +111,25 @@ class BotInterface(Cog):
                               colour=0xfdd835)
         await ctx.send(embed=embed)
 
+    @commands.command()
+    async def pay(self, ctx, target_uid: str, raw_amount: str) -> None:
+        # Remove the @mention wrapper from the UID
+        target_uid = target_uid.strip(' <@!>')
+
+        try:
+            amount = int(raw_amount)
+        except ValueError:
+            await ctx.send(f'`{raw_amount}` is not a number!')
+            return
+
+        try:
+            self.pc.pay(ctx.author.id, target_uid, amount)
+        except Error as e:
+            await ctx.send(str(e))
+        else:
+            await ctx.send(f'{ctx.author.mention} paid <@{target_uid}> '
+                           f'{format_currency(amount)}.')
+
     # This starts with two underscores to try and avoid conflicts with any
     # future commands.Cog internal function, the name will be mangled by
     # Python transparently.

@@ -1,7 +1,7 @@
 import time
 from typing import Any, Dict, List, Optional, Union
 from . import items
-from .store import Error, Store as _Store
+from .store import CannotAffordError, Error, Store as _Store
 
 class User:
     __slots__ = ('store', 'id', 'balance', 'boost', 'inventory', '_next_boost')
@@ -44,7 +44,7 @@ class User:
     def buy_item(self, item: items.Item, qty: int) -> None:
         total_cost = item.cost * qty
         if total_cost > self.balance:
-            raise Error("You don't have enough to buy that!")
+            raise CannotAffordError
 
         self.store.buy(item, qty)
         self.balance -= total_cost
