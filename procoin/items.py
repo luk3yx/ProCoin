@@ -32,9 +32,10 @@ class Item:
     def stockable(self) -> bool:
         return self.default_qty > 0
 
+    # TODO: Better name for this.
     @property
-    def item_string(self) -> str:
-        res = ''
+    def prefixed_name(self) -> str:
+        res: str = ''
         if self.stockable:
             # Get a prefix for expensive items.
             for min_cost, prefix in prefixes:
@@ -44,8 +45,11 @@ class Item:
         else:
             # Items no longer sold get their own prefix.
             res = '**V** '
+        return res + self.name
 
-        res += f'{self.name} ({format_currency(self.cost)}'
+    @property
+    def item_string(self) -> str:
+        res = f'{self.prefixed_name} ({format_currency(self.cost)}'
         if self.boost:
             res += f', provides a boost of {format_currency(self.boost)}'
         return res + ')'

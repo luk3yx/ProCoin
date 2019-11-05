@@ -65,6 +65,19 @@ class BotInterface(Cog):
         await ctx.send(f'{ctx.author.mention} has a boost of '
                        f'{format_currency(user.boost)}')
 
+    @commands.command()
+    async def info(self, ctx, *parameters: str) -> None:
+        item_string = ' '.join(parameters)
+        item = self.pc.items.lookup(item_string)
+        if not item:
+            await ctx.send("Couldn't find that item!")
+            return
+        msg: str = f'Cost: {format_currency(item.cost)}\n' \
+                   f'Boost: {format_currency(item.boost)}'
+        embed = discord.Embed(title=item.prefixed_name, description=msg,
+                              colour=0xfdd835)
+        await ctx.send(embed=embed)
+
     @commands.command(aliases=['buy'])
     async def purchase(self, ctx, *parameters: str) -> None:
         if len(parameters) < 1:
