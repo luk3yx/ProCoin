@@ -243,21 +243,25 @@ class BotInterface(Cog, name='General commands'):
 
     @Cog.listener()
     async def on_command_error(self, ctx, error: BaseException) -> None:
-        if isinstance(error, discord.ext.commands.CommandNotFound):
+        if isinstance(error, commands.CommandNotFound):
             await ctx.send(f'Invalid command! Use {self.bot.command_prefix}'
                            f'help for a list of commands.')
-        elif isinstance(error, discord.ext.commands.UserInputError):
-            await ctx.send(f'Invalid command invocation! Try `'
+        elif isinstance(error, commands.UserInputError):
+            if isinstance(error, commands.MissingRequiredArgument):
+                msg = 'Not enough arguments passed!'
+            else:
+                msg = 'Invalid command invocation!'
+            await ctx.send(f'{msg} Try `'
                            f'{self.bot.command_prefix}help {ctx.command.name}'
                            f'` for more information.')
-        elif isinstance(error, discord.ext.commands.CheckFailure):
+        elif isinstance(error, commands.CheckFailure):
             await ctx.send('Permission denied!')
-        elif isinstance(error, discord.ext.commands.CommandInvokeError) and \
+        elif isinstance(error, commands.CommandInvokeError) and \
                 isinstance(error.__cause__, Error):
             # Handle Error objects.
             await ctx.send(str(error.__cause__))
         else:
-            if isinstance(error, discord.ext.commands.CommandInvokeError):
+            if isinstance(error, commands.CommandInvokeError):
                 error = error.__cause__
             traceback.print_exception(type(error), error, error.__traceback__)
             msg = f'{type(error).__name__}: {error or "*(no message)*"}'
