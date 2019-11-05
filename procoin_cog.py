@@ -41,7 +41,7 @@ class BotInterface(Cog):
                 return discord_user.name
 
         # Default username
-        return repr(user.id)
+        return '#' + user.id
 
     # TODO: Permission checks
     @commands.command()
