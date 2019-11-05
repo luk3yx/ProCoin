@@ -58,6 +58,27 @@ class ProCoin:
         sale_price: int = user.sell_item(item, qty)
         return sale_price
 
+    def give_item(self, user_id: Union[str, int], target_uid: Union[str, int],
+            item_string: str, qty: int) -> None:
+        user = self.users.get_or_create(user_id)
+        target_user = self.users.find_by_id(target_uid)
+        if not target_user:
+            raise Error('Unknown user!')
+
+        item = self.items.lookup(item_string)
+        if not item:
+            raise ItemNotFoundError(item_string)
+
+        if qty < 0:
+            raise Error('You cannot steal from someone!')
+        elif qty == 0:
+            raise Error('You cannot give someone nothing!')
+
+        # User.take_item() will raise an error if the user doesn't have enough
+        # items.
+        user.take_item(item, qty)
+        target_user.add_item(item, qty)
+
     # Adds money to a user.
     def add_cash(self, user_id: Union[str, int], amount: int) -> None:
         assert amount >= 0

@@ -41,6 +41,15 @@ class User:
             boost += ii.get_boost(item_id) * qty
         self.boost = boost
 
+    # Adds an item to the user's inventory and adds the boost.
+    def add_item(self, item: items.Item, qty: int) -> None:
+        assert qty > 0
+        if item.id in self.inventory:
+            self.inventory[item.id] += qty
+        else:
+            self.inventory[item.id] = qty
+        self.boost += item.boost * qty
+
     # Buy an item from the store.
     def buy_item(self, item: items.Item, qty: int) -> None:
         total_cost = item.cost * qty
@@ -49,18 +58,11 @@ class User:
 
         self.store.buy(item, qty)
         self.balance -= total_cost
-        if item.id in self.inventory:
-            self.inventory[item.id] += qty
-        else:
-            self.inventory[item.id] = qty
-        self.boost += item.boost * qty
+        self.add_item(item, qty)
 
-    # Sell an item to the store. The actual sale price can be between 0.85 and
-    # 1.05 times the actual price.
-    def sell_item(self, item: items.Item, qty: int) -> int:
-        if qty < 1:
-            raise Error('You must sell at least one item!')
-
+    # Deletes an item from the user's inventory and subtracts the boost.
+    def take_item(self, item: items.Item, qty: int) -> None:
+        assert qty > 0
         actual_amount = self.inventory.get(item.id, 0)
         if qty > actual_amount:
             raise Error(f'You only have {actual_amount} `{item}`'
@@ -71,9 +73,15 @@ class User:
             self.inventory[item.id] = actual_amount
         else:
             del self.inventory[item.id]
-
         self.boost -= item.boost * qty
 
+    # Sell an item to the store. The actual sale price can be between 0.85 and
+    # 1.05 times the actual price.
+    def sell_item(self, item: items.Item, qty: int) -> int:
+        if qty < 1:
+            raise Error('You must sell at least one item!')
+
+        self.take_item(item, qty)
         self.store.sell(item, qty)
         cost: float = item.cost * qty
         cost *= random.uniform(0.85, 1.05)

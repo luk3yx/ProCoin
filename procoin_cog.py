@@ -206,6 +206,31 @@ class BotInterface(Cog):
             await ctx.send(f'{ctx.author.mention} paid <@{target_uid}> '
                            f'{format_currency(amount)}.')
 
+    @commands.command()
+    async def give(self, ctx, target_uid: str, *parameters: str) -> None:
+        if len(parameters) < 1:
+            await ctx.send("Idk what you want to give. :shrug:")
+            return
+
+        try:
+            qty = int(parameters[-1])
+            item_string = ' '.join(parameters[:-1])
+        except ValueError:
+            qty = 1
+            item_string = ' '.join(parameters)
+
+        # Remove the @mention wrapper from the UID
+        target_uid = target_uid.strip(' <@!>')
+
+        try:
+            self.pc.give_item(ctx.author.id, target_uid, item_string, qty)
+        except Error as e:
+            await ctx.send(str(e))
+        else:
+            await ctx.send(f'{ctx.author.mention} gave <@{target_uid}> {qty} '
+                           f'{self.pc.items.lookup(item_string)}'
+                           f'{_plural(qty)}!')
+
     # This starts with two underscores to try and avoid conflicts with any
     # future commands.Cog internal function, the name will be mangled by
     # Python transparently.
