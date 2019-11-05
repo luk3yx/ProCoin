@@ -7,6 +7,10 @@ import os, time, traceback
 if TYPE_CHECKING:
     class Cog:
         @classmethod
+        def __init_subclass__(cls, **kwargs):
+            return super().__init_subclass__()
+
+        @classmethod
         def listener(self, name: Optional[str] = None):
             return lambda func : func
 else:
@@ -21,9 +25,12 @@ from procoin.users import User
 def _plural(n: Union[int, float]) -> str:
     return '' if n == 1 else 's'
 
+async def admin_check(ctx) -> bool:
+    return await ctx.bot.is_owner(ctx.author)
+
 # This can't inherit from both commands.Cog and ProCoin, as attributes such as
 # "store" conflict.
-class BotInterface(Cog):
+class BotInterface(Cog, name='General commands'):
     def __init__(self, bot: commands.Bot, directory: str) -> None:
         self.bot = bot
         self.pc = ProCoin(os.path.join(directory, 'items.json'),
@@ -44,7 +51,8 @@ class BotInterface(Cog):
         return '#' + user.id
 
     # TODO: Permission checks
-    @commands.command(help='Reloads the bot.')
+    @commands.check(admin_check)
+    @commands.command(help='Reloads the bot.', hidden=True)
     async def reload(self, ctx) -> None:
         try:
             self.bot.reload_extension(__name__)
@@ -57,7 +65,8 @@ class BotInterface(Cog):
             if self.bot.user:
                 await ctx.message.remove_reaction('⌛', self.bot.user)
 
-    @commands.command(help='Starts a debugging shell.')
+    @commands.check(admin_check)
+    @commands.command(help='Starts a debugging shell.', hidden=True)
     async def drop_to_shell(self, ctx):
         await ctx.message.add_reaction('⌛')
         try:
@@ -267,6 +276,8 @@ class BotInterface(Cog):
             await ctx.send(f'Invalid command invocation! Try `'
                            f'{self.bot.command_prefix}help {ctx.command.name}'
                            f'` for more information.')
+        elif isinstance(error, discord.ext.commands.CheckFailure):
+            await ctx.send('Permission denied!')
         else:
             if isinstance(error, discord.ext.commands.CommandInvokeError):
                 error = error.__cause__
