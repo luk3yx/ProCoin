@@ -1,7 +1,7 @@
 import discord # type: ignore
 from discord.ext import commands, tasks # type: ignore
 from typing import Any, Optional, Tuple, Union, TYPE_CHECKING
-import os, time
+import os, time, traceback
 
 # TODO: Something better
 if TYPE_CHECKING:
@@ -44,8 +44,8 @@ class BotInterface(Cog):
         return '#' + user.id
 
     # TODO: Permission checks
-    @commands.command()
-    async def reload(self, ctx, *parameters: str) -> None:
+    @commands.command(help='Reloads the bot.')
+    async def reload(self, ctx) -> None:
         try:
             self.bot.reload_extension(__name__)
         except:
@@ -57,8 +57,8 @@ class BotInterface(Cog):
             if self.bot.user:
                 await ctx.message.remove_reaction('⌛', self.bot.user)
 
-    @commands.command()
-    async def drop_to_shell(self, ctx, *parameters: str):
+    @commands.command(help='Starts a debugging shell.')
+    async def drop_to_shell(self, ctx):
         await ctx.message.add_reaction('⌛')
         try:
             import code
@@ -68,7 +68,8 @@ class BotInterface(Cog):
                 await ctx.message.add_reaction('✅')
                 await ctx.message.remove_reaction('⌛', self.bot.user)
 
-    @commands.command(aliases=['money'])
+    @commands.command(aliases=['money'], help="Gets a user's balance.",
+                      usage='[@mention]')
     async def bal(self, ctx, target_uid: str = '') -> None:
         target_uid = target_uid.strip(' <@!>')
 
@@ -83,7 +84,7 @@ class BotInterface(Cog):
             return
         await ctx.send(f'<@{user.id}> has {format_currency(user.balance)}')
 
-    @commands.command()
+    @commands.command(help="Gets a user's boost.", usage='[@mention]')
     async def boost(self, ctx, target_uid: str = '') -> None:
         target_uid = target_uid.strip(' <@!>')
 
@@ -99,7 +100,8 @@ class BotInterface(Cog):
         await ctx.send(f'<@{user.id}> has a boost of '
                        f'{format_currency(user.boost)}')
 
-    @commands.command(aliases=['inventory'])
+    @commands.command(aliases=['inventory'], help="Gets a user's inventory.",
+                      usage='[@mention]')
     async def inv(self, ctx, target_uid: str = '') -> None:
         target_uid = target_uid.strip(' <@!>1')
 
@@ -118,7 +120,8 @@ class BotInterface(Cog):
             description=user.inv, colour=0xfdd835)
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(help='Gives information on an item.',
+                      usage='<item name>')
     async def info(self, ctx, *parameters: str) -> None:
         item_string = ' '.join(parameters)
         item = self.pc.items.lookup(item_string)
@@ -131,8 +134,9 @@ class BotInterface(Cog):
                               colour=0xfdd835)
         await ctx.send(embed=embed)
 
-    @commands.command(aliases=['buy'])
-    async def purchase(self, ctx, *parameters: str) -> None:
+    @commands.command(aliases=['purchase'], usage='<item name> [quantity]',
+                      help='Purchases item(s) from the store.')
+    async def buy(self, ctx, *parameters: str) -> None:
         if len(parameters) < 1:
             await ctx.send("Idk what you want to purchase. :shrug:")
             return
@@ -154,7 +158,10 @@ class BotInterface(Cog):
                        f' {self.pc.items.lookup(item_string)}{_plural(qty)}'
                        f' for {format_currency(total_cost)}.')
 
-    @commands.command()
+    @commands.command(brief='Sells item(s) to the store.',
+                      help='Sells item(s) to the store.\nYou will get between '
+                        '85% and 105% of the current sale price.',
+                      usage='<item name> [quantity]')
     async def sell(self, ctx, *parameters: str) -> None:
         if len(parameters) < 1:
             await ctx.send("Idk what you want to sell. :shrug:")
@@ -177,7 +184,7 @@ class BotInterface(Cog):
                        f' {self.pc.items.lookup(item_string)}{_plural(qty)}'
                        f' for {format_currency(sale_price)}.')
 
-    @commands.command()
+    @commands.command(help='Displays the store.')
     async def store(self, ctx) -> None:
         next_update = self.pc.store.last_update + 3600
         delay = round(max(next_update - time.time(), 0) / 60)
@@ -187,7 +194,8 @@ class BotInterface(Cog):
                               colour=0xfdd835)
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(help='Pays another user (in 💰).',
+                      usage='<@mention> <amount>')
     async def pay(self, ctx, target_uid: str, raw_amount: str) -> None:
         # Remove the @mention wrapper from the UID
         target_uid = target_uid.strip(' <@!>')
@@ -206,7 +214,8 @@ class BotInterface(Cog):
             await ctx.send(f'{ctx.author.mention} paid <@{target_uid}> '
                            f'{format_currency(amount)}.')
 
-    @commands.command()
+    @commands.command(help='Gives another person item(s).',
+                      usage='<@mention> <item name> [quantity]')
     async def give(self, ctx, target_uid: str, *parameters: str) -> None:
         if len(parameters) < 1:
             await ctx.send("Idk what you want to give. :shrug:")
@@ -244,10 +253,30 @@ class BotInterface(Cog):
 
     # Call User.add_boost() if required.
     @Cog.listener()
-    async def on_message(self, message):
+    async def on_message(self, message) -> None:
         user = self.pc.users.find_by_id(message.author.id)
         if user:
             user.add_boost()
+
+    @Cog.listener()
+    async def on_command_error(self, ctx, error: BaseException) -> None:
+        if isinstance(error, discord.ext.commands.CommandNotFound):
+            await ctx.send(f'Invalid command! Use {self.bot.command_prefix}'
+                           f'help for a list of commands.')
+        elif isinstance(error, discord.ext.commands.UserInputError):
+            await ctx.send(f'Invalid command invocation! Try `'
+                           f'{self.bot.command_prefix}help {ctx.command.name}'
+                           f'` for more information.')
+        else:
+            if isinstance(error, discord.ext.commands.CommandInvokeError):
+                error = error.__cause__
+            traceback.print_exception(type(error), error, error.__traceback__)
+            msg = f'{type(error).__name__}: {error or "*(no message)*"}'
+            embed = discord.Embed(title='🐛 Error running command!',
+                description=msg, colour=0xc62828)
+            embed.set_footer(text='A full traceback has been written to '
+                'stdout.')
+            await ctx.send(embed=embed)
 
     # Save the user file (and block) when the cog is unloaded. This has to
     # block as otherwise reloads might lose data.
