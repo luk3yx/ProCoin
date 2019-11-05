@@ -1,4 +1,4 @@
-import time
+import math, random, time
 from typing import Any, Dict, List, Optional, Union
 from . import items
 from .store import CannotAffordError, Error, Store as _Store
@@ -53,6 +53,32 @@ class User:
         else:
             self.inventory[item.id] = qty
         self.boost += item.boost * qty
+
+    # Sell an item to the store. The actual sale price can be between 0.85 and
+    # 1.05 times the actual price.
+    def sell_item(self, item: items.Item, qty: int) -> int:
+        if qty < 1:
+            raise Error('You must sell at least one item!')
+
+        actual_amount = self.inventory.get(item.id, 0)
+        if qty > actual_amount:
+            raise Error(f'You only have {actual_amount} `{item}`'
+                        f'{"" if actual_amount == 1 else "s"}, not {qty}!')
+
+        actual_amount -= qty
+        if actual_amount > 0:
+            self.inventory[item.id] = actual_amount
+        else:
+            del self.inventory[item.id]
+
+        self.boost -= item.boost * qty
+
+        self.store.sell(item, qty)
+        cost: float = item.cost * qty
+        cost *= random.uniform(0.85, 1.05)
+        cost_int: int = math.floor(cost)
+        self.balance += cost_int
+        return cost_int
 
     # Adds the boost if called 20 seconds after the last boost.
     def add_boost(self) -> None:

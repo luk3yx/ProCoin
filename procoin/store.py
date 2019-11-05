@@ -74,6 +74,17 @@ class Store:
         if self.current_stock[item] == 0:
             del self.current_stock[item]
 
+    def sell(self, item: Item, qty: int) -> None:
+        # Can't request less than 1 item.
+        if qty < 1:
+            raise Error('You must sell at least one item!')
+
+        # Add the item to the store
+        if item in self.current_stock:
+            self.current_stock[item] += qty
+        else:
+            self.current_stock[item] = qty
+
     def _sort_key(self, item: Item) -> int:
         return item.cost
 

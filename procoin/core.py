@@ -47,6 +47,17 @@ class ProCoin:
         user.buy_item(item, qty)
         return item.cost * qty
 
+    # Sells an item to the store. Returns the total cost.
+    def sell(self, user_id: Union[str, int], item_string: str, qty: int) \
+            -> int:
+        item = self.items.lookup(item_string)
+        if not item:
+            raise ItemNotFoundError(item_string)
+
+        user = self.users.get_or_create(user_id)
+        sale_price: int = user.sell_item(item, qty)
+        return sale_price
+
     # Adds money to a user.
     def add_cash(self, user_id: Union[str, int], amount: int) -> None:
         assert amount >= 0

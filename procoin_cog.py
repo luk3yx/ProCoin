@@ -16,6 +16,7 @@ else:
 from procoin.core import ProCoin
 from procoin.items import format_currency
 from procoin.store import Error
+from procoin.users import User
 
 def _plural(n: Union[int, float]) -> str:
     return '' if n == 1 else 's'
@@ -136,6 +137,29 @@ class BotInterface(Cog):
         await ctx.send(f'{ctx.author.mention} bought {qty}'\
                        f' {self.pc.items.lookup(item_string)}{_plural(qty)}'
                        f' for {format_currency(total_cost)}.')
+
+    @commands.command()
+    async def sell(self, ctx, *parameters: str) -> None:
+        if len(parameters) < 1:
+            await ctx.send("Idk what you want to sell. :shrug:")
+            return
+
+        try:
+            qty = int(parameters[-1])
+            item_string = ' '.join(parameters[:-1])
+        except ValueError:
+            qty = 1
+            item_string = ' '.join(parameters)
+
+        try:
+            sale_price = self.pc.sell(ctx.author.id, item_string, qty)
+        except Error as e:
+            await ctx.send(str(e))
+            return
+
+        await ctx.send(f'{ctx.author.mention} sold {qty}'\
+                       f' {self.pc.items.lookup(item_string)}{_plural(qty)}'
+                       f' for {format_currency(sale_price)}.')
 
     @commands.command()
     async def store(self, ctx) -> None:
