@@ -200,16 +200,9 @@ class BotInterface(Cog, name='General commands'):
 
     @commands.command(help='Pays another user (in 💰).',
                       usage='<@mention> <amount>')
-    async def pay(self, ctx, target_uid: str, raw_amount: str) -> None:
+    async def pay(self, ctx, target_uid: str, amount: int) -> None:
         # Remove the @mention wrapper from the UID
         target_uid = target_uid.strip(' <@!>')
-
-        try:
-            amount = int(raw_amount)
-        except ValueError:
-            await ctx.send(f'`{raw_amount}` is not a number!')
-            return
-
         self.pc.pay(ctx.author.id, target_uid, amount)
         await ctx.send(f'{ctx.author.mention} paid <@{target_uid}> '
                        f'{format_currency(amount)}.')
