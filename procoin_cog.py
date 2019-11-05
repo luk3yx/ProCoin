@@ -147,11 +147,11 @@ class BotInterface(Cog, name='General commands'):
             raise commands.UserInputError
         item_string = ' '.join(parameters)
         try:
+            qty = int(parameters[-1])
             # Try finding the item string as-is for items ending in numbers
             # such as "Area 51".
             if self.pc.items.lookup(item_string):
                 raise ValueError
-            qty = int(parameters[-1])
             item_string = ' '.join(parameters[:-1])
         except ValueError:
             qty = 1
