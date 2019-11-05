@@ -25,9 +25,6 @@ from procoin.users import User
 def _plural(n: Union[int, float]) -> str:
     return '' if n == 1 else 's'
 
-async def admin_check(ctx) -> bool:
-    return await ctx.bot.is_owner(ctx.author)
-
 # This can't inherit from both commands.Cog and ProCoin, as attributes such as
 # "store" conflict.
 class BotInterface(Cog, name='General commands'):
@@ -52,7 +49,7 @@ class BotInterface(Cog, name='General commands'):
         return '#' + user.id
 
     # TODO: Permission checks
-    @commands.check(admin_check)
+    @commands.is_owner()
     @commands.command(help='Reloads the bot.', hidden=True)
     async def reload(self, ctx) -> None:
         try:
@@ -66,7 +63,7 @@ class BotInterface(Cog, name='General commands'):
             if self.bot.user:
                 await ctx.message.remove_reaction('⌛', self.bot.user)
 
-    @commands.check(admin_check)
+    @commands.is_owner()
     @commands.command(help='Starts a debugging shell.', hidden=True)
     async def drop_to_shell(self, ctx):
         await ctx.message.add_reaction('⌛')
