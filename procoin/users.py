@@ -61,6 +61,15 @@ class User:
             self.balance += self.boost
             self._next_boost = t + 20
 
+    @property    
+    def inv(self) -> str:
+        inv_string = ''
+        for item in sorted(self.inventory.keys()):
+            # The diamond prefix is handled in items.py, no need to worry about
+            # it here.
+            inv_string += f'`{self.inventory[item]}x` {item}\n'
+        return inv_string
+
 class UserInterface:
     __slots__ = ('store', 'users')
     def __init__(self, store: _Store, users: Dict[str, User]) -> None:

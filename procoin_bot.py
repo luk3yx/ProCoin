@@ -4,7 +4,7 @@ import discord # type: ignore
 from discord.ext import commands # type: ignore
 import os
 
-bot = commands.Bot(command_prefix='&')
+bot = commands.Bot(command_prefix='%')
 bot.load_extension('procoin_cog')
 
 @bot.event
