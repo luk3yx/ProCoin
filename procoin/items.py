@@ -30,7 +30,7 @@ class Item:
     # should probably have a more descriptive name.
     @bool
     def stockable(self) -> bool:
-        return bool(self.default_qty)
+        return self.default_qty > 0
 
     @property
     def item_string(self) -> str:
