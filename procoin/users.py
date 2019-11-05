@@ -37,8 +37,15 @@ class User:
     def recalc_boost(self) -> None:
         ii: items.ItemInterface = self.store.items
         boost: int = 1
-        for item_id, qty in self.inventory.items():
-            boost += ii.get_boost(item_id) * qty
+        # Convert self.inventory.items() to a tuple so items can be safely
+        # deleted from it.
+        for item_id, qty in tuple(self.inventory.items()):
+            try:
+                boost += ii.get_item(item_id).boost * qty
+            except KeyError:
+                # Delete unknown items
+                print(f'WARNING: Deleting unknown item {item_id!r}.')
+                del self.inventory[item_id]
         self.boost = boost
 
     # Adds an item to the user's inventory and adds the boost.
