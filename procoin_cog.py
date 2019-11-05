@@ -54,15 +54,34 @@ class BotInterface(Cog):
                 await ctx.message.remove_reaction('⌛', self.bot.user)
 
     @commands.command(aliases=['money'])
-    async def bal(self, ctx) -> None:
-        user = self.pc.users.get_or_create(ctx.author.id)
-        await ctx.send(f'{ctx.author.mention} has '
-                       f'{format_currency(user.balance)}')
+    async def bal(self, ctx, target_uid: str = '') -> None:
+        target_uid = target_uid.strip(' <@!>')
+
+        user: Optional[User]
+        if target_uid:
+            user = self.pc.users.find_by_id(target_uid)
+        else:
+            user = self.pc.users.get_or_create(ctx.author.id)
+
+        if not user:
+            await ctx.send("That user doesn't have a balance!")
+            return
+        await ctx.send(f'<@{user.id}> has {format_currency(user.balance)}')
 
     @commands.command()
-    async def boost(self, ctx) -> None:
-        user = self.pc.users.get_or_create(ctx.author.id)
-        await ctx.send(f'{ctx.author.mention} has a boost of '
+    async def boost(self, ctx, target_uid: str = '') -> None:
+        target_uid = target_uid.strip(' <@!>')
+
+        user: Optional[User]
+        if target_uid:
+            user = self.pc.users.find_by_id(target_uid)
+        else:
+            user = self.pc.users.get_or_create(ctx.author.id)
+
+        if not user:
+            await ctx.send("That user doesn't have a boost!")
+            return
+        await ctx.send(f'<@{user.id}> has a boost of '
                        f'{format_currency(user.boost)}')
 
     @commands.command()
