@@ -157,12 +157,7 @@ class BotInterface(Cog, name='General commands'):
             qty = 1
             item_string = ' '.join(parameters)
 
-        try:
-            total_cost = self.pc.buy(ctx.author.id, item_string, qty)
-        except Error as e:
-            await ctx.send(str(e))
-            return
-
+        total_cost = self.pc.buy(ctx.author.id, item_string, qty)
         await ctx.send(f'{ctx.author.mention} bought {qty}'\
                        f' {self.pc.items.lookup(item_string)}{_plural(qty)}'
                        f' for {format_currency(total_cost)}.')
@@ -183,11 +178,8 @@ class BotInterface(Cog, name='General commands'):
             qty = 1
             item_string = ' '.join(parameters)
 
-        try:
-            sale_price = self.pc.sell(ctx.author.id, item_string, qty)
-        except Error as e:
-            await ctx.send(str(e))
-            return
+        # Error objects are now caught in a global handler.
+        sale_price = self.pc.sell(ctx.author.id, item_string, qty)
 
         await ctx.send(f'{ctx.author.mention} sold {qty}'\
                        f' {self.pc.items.lookup(item_string)}{_plural(qty)}'
@@ -215,13 +207,9 @@ class BotInterface(Cog, name='General commands'):
             await ctx.send(f'`{raw_amount}` is not a number!')
             return
 
-        try:
-            self.pc.pay(ctx.author.id, target_uid, amount)
-        except Error as e:
-            await ctx.send(str(e))
-        else:
-            await ctx.send(f'{ctx.author.mention} paid <@{target_uid}> '
-                           f'{format_currency(amount)}.')
+        self.pc.pay(ctx.author.id, target_uid, amount)
+        await ctx.send(f'{ctx.author.mention} paid <@{target_uid}> '
+                       f'{format_currency(amount)}.')
 
     @commands.command(help='Gives another person item(s).',
                       usage='<@mention> <item name> [quantity]')
@@ -240,14 +228,10 @@ class BotInterface(Cog, name='General commands'):
         # Remove the @mention wrapper from the UID
         target_uid = target_uid.strip(' <@!>')
 
-        try:
-            self.pc.give_item(ctx.author.id, target_uid, item_string, qty)
-        except Error as e:
-            await ctx.send(str(e))
-        else:
-            await ctx.send(f'{ctx.author.mention} gave <@{target_uid}> {qty} '
-                           f'{self.pc.items.lookup(item_string)}'
-                           f'{_plural(qty)}!')
+        self.pc.give_item(ctx.author.id, target_uid, item_string, qty)
+        await ctx.send(f'{ctx.author.mention} gave <@{target_uid}> {qty} '
+                       f'{self.pc.items.lookup(item_string)}'
+                       f'{_plural(qty)}!')
 
     # This starts with two underscores to try and avoid conflicts with any
     # future commands.Cog internal function, the name will be mangled by
@@ -278,6 +262,10 @@ class BotInterface(Cog, name='General commands'):
                            f'` for more information.')
         elif isinstance(error, discord.ext.commands.CheckFailure):
             await ctx.send('Permission denied!')
+        elif isinstance(error, discord.ext.commands.CommandInvokeError) and \
+                isinstance(error.__cause__, Error):
+            # Handle Error objects.
+            await ctx.send(str(error.__cause__))
         else:
             if isinstance(error, discord.ext.commands.CommandInvokeError):
                 error = error.__cause__
