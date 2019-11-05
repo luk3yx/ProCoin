@@ -28,7 +28,7 @@ class Item:
 
     # Returns True if the item can be added to stores (default_qty > 0). This
     # should probably have a more descriptive name.
-    @bool
+    @property
     def stockable(self) -> bool:
         return self.default_qty > 0
 
