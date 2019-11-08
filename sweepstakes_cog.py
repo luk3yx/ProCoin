@@ -5,7 +5,7 @@ from random import choice, randint
 from procoin.core import ProCoin
 
 
-class sweepstakes(commands.Cog):
+class Sweepstakes(commands.Cog):
 
     __slots__ = ('bot', 'next_event', 'next_item', 'in_race')
     def __init__(self, bot: commands.Bot):
@@ -32,7 +32,7 @@ class sweepstakes(commands.Cog):
             self.set_new_item()
             if randint(0, 1) == 1:
                 # Do sweepstakes
-                await self.sweepstake(message)
+                await self.do_sweepstake(message)
 
             else:
                 # Start a race
@@ -40,7 +40,7 @@ class sweepstakes(commands.Cog):
                     f' will receive 1 {self.next_item}!')
                 self.in_race = True
                 
-    async def sweepstake(self, message):
+    async def do_sweepstake(self, message):
         user = self.pc.users.get_or_create(message.author.id)
         item = self.pc.items.get_item(self.next_item)
         user.add_item(item, 1)
@@ -64,4 +64,4 @@ class sweepstakes(commands.Cog):
         return cog.pc
                     
 def setup(bot):
-    bot.add_cog(sweepstakes(bot))
+    bot.add_cog(Sweepstakes(bot))
