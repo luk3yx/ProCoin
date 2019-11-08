@@ -6,6 +6,7 @@ import os
 
 bot = commands.Bot(command_prefix='&')
 bot.load_extension('procoin_cog')
+bot.load_extension('sweepstakes_cog')
 
 @bot.event
 async def on_ready():
