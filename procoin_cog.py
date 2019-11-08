@@ -55,6 +55,7 @@ class BotInterface(Cog, name='General commands'):
     async def reload(self, ctx) -> None:
         try:
             self.bot.reload_extension(__name__)
+            self.bot.reload_extension('sweepstakes_cog')
         except:
             await ctx.message.add_reaction('❌')
             raise
@@ -269,7 +270,7 @@ class BotInterface(Cog, name='General commands'):
             embed = discord.Embed(title='🐛 Error running command!',
                 description=msg, colour=0xc62828)
             embed.set_footer(text='A full traceback has been written to '
-                'stdout.')
+                'stderr.')
             await ctx.send(embed=embed)
 
     # Save the user file (and block) when the cog is unloaded. This has to
