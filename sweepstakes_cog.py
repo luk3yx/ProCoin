@@ -10,7 +10,8 @@ class Sweepstakes(commands.Cog):
     __slots__ = ('bot', 'next_event', 'next_item', 'in_race')
     def __init__(self, bot: commands.Bot):
       self.bot = bot
-      self.next_event = 1
+      self.next_event = 0
+      self._set_timer()
       self.next_item = None
       self.in_race = False
       
@@ -28,8 +29,8 @@ class Sweepstakes(commands.Cog):
                 return
 
         if self.next_event <= 0:
-            self.next_event = 1
-            self.set_new_item()
+            self._set_timer()
+            self._set_new_item()
             if randint(0, 1) == 1:
                 # Do sweepstakes
                 await self.do_sweepstake(message)
@@ -54,8 +55,11 @@ class Sweepstakes(commands.Cog):
         await message.channel.send('Congratulations! '\
             f' {message.author.mention} won the {self.next_item}!')
             
-    def set_new_item(self):
+    def _set_new_item(self):
         self.next_item = choice(list(self.pc.items.items.keys()))
+        
+    def _set_timer(self):
+        self.next_event = randint(23, 57)
                 
     @property
     def pc(self) -> ProCoin:
