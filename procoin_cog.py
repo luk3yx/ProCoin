@@ -6,6 +6,7 @@ import os, time, traceback
 # TODO: Something better
 if TYPE_CHECKING:
     class Cog:
+        __slots__ = ()
         @classmethod
         def __init_subclass__(cls, **kwargs):
             return super().__init_subclass__()
