@@ -45,8 +45,9 @@ class Sweepstakes(Cog):
                 await self.do_sweepstake(message)
             else:
                 # Start a race
+                assert self.next_item
                 await message.channel.send(f'The next person to @mention me ' \
-                    f'will receive 1 {self.next_item}!')
+                    f'will receive 1 {self.next_item.prefixed_name}!')
                 self.in_race = True
 
     async def do_sweepstake(self, message) -> None:
@@ -55,8 +56,8 @@ class Sweepstakes(Cog):
 
         user = self.pc.users.get_or_create(message.author.id)
         user.add_item(self.next_item, 1)
-        await message.channel.send('Sweepstakes! ' \
-            f'{message.author.mention} won 1 {self.next_item}!')
+        await message.channel.send(f'Sweepstakes! ' \
+            f'{message.author.mention} won a {self.next_item.prefixed_name}!')
         self.next_item = None
 
     async def give_prize(self, message) -> None:
@@ -64,8 +65,8 @@ class Sweepstakes(Cog):
 
         user = self.pc.users.get_or_create(message.author.id)
         user.add_item(self.next_item, 1)
-        await message.channel.send('Congratulations! ' \
-            f'{message.author.mention} won the {self.next_item}!')
+        await message.channel.send(f'Congratulations! ' \
+            f'{message.author.mention} won a {self.next_item.prefixed_name}!')
 
     # These functions start with two underscores so Python can mangle names,
     # I'm scared discord.py is going to add functions starting with a single
@@ -74,7 +75,7 @@ class Sweepstakes(Cog):
         self.next_item = choice(tuple(self.pc.items.items.values()))
 
     def __set_timer(self) -> None:
-        self.next_event = randint(23, 57)
+        self.next_event = randint(173, 427)
 
 def setup(bot):
     bot.add_cog(Sweepstakes(bot))
