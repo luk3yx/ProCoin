@@ -112,7 +112,7 @@ class BotInterface(Cog, name='General commands'):
     @commands.command(aliases=['inventory'], help="Gets a user's inventory.",
                       usage='[@mention]')
     async def inv(self, ctx, target_uid: str = '') -> None:
-        target_uid = target_uid.strip(' <@!>1')
+        target_uid = target_uid.strip(' <@!>')
 
         user: Optional[User]
         if target_uid:
