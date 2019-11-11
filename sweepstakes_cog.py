@@ -71,8 +71,12 @@ class Sweepstakes(Cog):
     # These functions start with two underscores so Python can mangle names,
     # I'm scared discord.py is going to add functions starting with a single
     # underscore.
+    def __item_filter(self, item: Item) -> bool:
+        return item.cost < 1_000_000_000
+
     def __set_new_item(self) -> None:
-        self.next_item = choice(tuple(self.pc.items.items.values()))
+        items = tuple(self.pc.items.filter_by(self.__item_filter))
+        self.next_item = choice(items)
 
     def __set_timer(self) -> None:
         self.next_event = randint(173, 427)
