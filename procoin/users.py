@@ -9,7 +9,7 @@ class User:
     def __init__(self, store: _Store, id: str) -> None:
         self.store = store
         self.id: str = id
-        self.balance: int = 0
+        self.balance: int = 1_000_000
         self.boost: int = 1
         self._next_boost: float = 0
         self.inventory: Dict[str, int] = {}
