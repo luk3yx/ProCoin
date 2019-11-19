@@ -122,9 +122,17 @@ class User:
             inv_string += f'`{amount}x` {items.get_prefixed_name(item)}: ' \
                           f'{format_currency(items.get_boost(item))}\n'
             total_items += amount
-        inv_string += f'\r\nTotal items: {total_items:,}' \
-                      f'\nTotal boost: {format_currency(self.boost)}'
-        return inv_string
+        footer = f'\r\nTotal items: {total_items:,}' \
+                 f'\nTotal boost: {format_currency(self.boost)}'
+
+        # Replace excess items with ellipsis.
+        # TODO: A multi-paged inventory.
+        if len(inv_string) + len(footer) > 2048:
+            while len(inv_string) + len(footer) > 2043:
+                inv_string = inv_string.rsplit('\n', 1)[0]
+            inv_string += '\n...\n'
+
+        return inv_string + footer
 
 class UserInterface:
     __slots__ = ('store', 'users')
