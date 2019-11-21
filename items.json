@@ -26,6 +26,18 @@
             ["Kirk's Glasses", "Mario's Hat"]
         ]
     },
+    "352345": {
+        "name": "A Mac",
+        "cost": 999999999999999000,
+        "boost": 1754053629681600,
+        "default_qty": 2
+    },
+    "761586": {
+        "name": "A Star",
+        "cost": 24984000000000,
+        "boost": 52545153994,
+        "default_qty": 9
+    },
     "A True Cake": {
         "name": "A True Cake",
         "cost": 1248529473245030,
@@ -74,6 +86,12 @@
                 "Shards of Narsil"
             ]
         ]
+    },
+    "606855": {
+        "name": "Apple",
+        "cost": 10000,
+        "boost": 100,
+        "default_qty": 11
     },
     "Arc Reactor": {
         "name": "Arc Reactor",
@@ -162,6 +180,12 @@
         "boost": 113100,
         "default_qty": 1
     },
+    "819230": {
+        "name": "Car",
+        "cost": 5403948324920,
+        "boost": 11701813495,
+        "default_qty": 10
+    },
     "Cheat": {
         "name": "Cheat",
         "cost": 1,
@@ -191,6 +215,12 @@
         "cost": 1138000,
         "boost": 7486,
         "default_qty": 1
+    },
+    "478478": {
+        "name": "Darth Vader's Inhaler",
+        "cost": 100114107083100000,
+        "boost": 582172505281182,
+        "default_qty": 4
     },
     "Death Star": {
         "name": "Death Star",
@@ -236,6 +266,12 @@
         "cost": 1325000,
         "boost": 5500,
         "default_qty": 7
+    },
+    "518627": {
+        "name": "Galactic Republic",
+        "cost": 3000000000,
+        "boost": 3000000,
+        "default_qty": 1
     },
     "Genesis Device": {
         "name": "Genesis Device",
@@ -355,6 +391,12 @@
         "boost": 1350,
         "default_qty": 1
     },
+    "325767": {
+        "name": "Lair",
+        "cost": 573042384902,
+        "boost": 1297160933,
+        "default_qty": 8
+    },
     "Lego Brick": {
         "name": "Lego Brick",
         "cost": 200,
@@ -362,7 +404,7 @@
         "default_qty": 100
     },
     "Legolas' Bow": {
-        "name": "Legolas' Bow",
+        "name": "Legolas's Bow",
         "cost": 301800,
         "boost": 2110,
         "default_qty": 1
@@ -385,6 +427,12 @@
         "boost": 0,
         "default_qty": 0
     },
+    "314339": {
+        "name": "Luke's Lightsaber",
+        "cost": 116114097105110,
+        "boost": 237357047891,
+        "default_qty": 2
+    },
     "Magnetic Floating Bed": {
         "name": "Magnetic Floating Bed",
         "cost": 1600000,
@@ -397,6 +445,12 @@
         "boost": 5342,
         "default_qty": 1
     },
+    "114270": {
+        "name": "Mario's Kart",
+        "cost": 888888888,
+        "boost": 2314801,
+        "default_qty": 10
+    },
     "Medpack": {
         "name": "Medpack",
         "cost": 100000,
@@ -407,6 +461,24 @@
         "name": "Meme",
         "cost": 1755841378694,
         "boost": 3886619829,
+        "default_qty": 1
+    },
+    "412178": {
+        "name": "Microsoft Excel",
+        "cost": 100000000,
+        "boost": 274354,
+        "default_qty": 1
+    },
+    "077559": {
+        "name": "Microsoft Powerpoint",
+        "cost": 100000000,
+        "boost": 274354,
+        "default_qty": 1
+    },
+    "315205": {
+        "name": "Microsoft Word",
+        "cost": 100000000,
+        "boost": 274354,
         "default_qty": 1
     },
     "Mind Stone": {
@@ -425,6 +497,12 @@
         "name": "Mjolnir",
         "cost": 4490000,
         "boost": 30000,
+        "default_qty": 1
+    },
+    "496189": {
+        "name": "Noah's Ark",
+        "cost": 110097104000,
+        "boost": 257816863,
         "default_qty": 1
     },
     "Nuclear Bomb": {
@@ -520,6 +598,12 @@
         "boost": 84,
         "default_qty": 10
     },
+    "129274": {
+        "name": "Self-Destruct Button",
+        "cost": 107097066079079000,
+        "boost": 194665763429109,
+        "default_qty": 27
+    },
     "Shards of Narsil": {
         "name": "Shards of Narsil",
         "cost": 20000,
@@ -601,6 +685,18 @@
             ["Captain America's Shield", "Mjolnir"]
         ]
     },
+    "831121": {
+        "name": "The Empire",
+        "cost": 4000000000,
+        "boost": 4000000,
+        "default_qty": 1
+    },
+    "567009": {
+        "name": "The Mayflower",
+        "cost": 10216201021620100,
+        "boost": 19305870132831,
+        "default_qty": 1
+    },
     "The Moon": {
         "name": "The Moon",
         "cost": 839548670437,
@@ -611,6 +707,12 @@
         "name": "The Piece of Resistance",
         "cost": 998520,
         "boost": 4950,
+        "default_qty": 1
+    },
+    "470005": {
+        "name": "The Titanic",
+        "cost": 73950274947329,
+        "boost": 152422318597,
         "default_qty": 1
     },
     "The Tumbler Batmobile": {
@@ -645,6 +747,18 @@
         "cost": 1000000,
         "boost": 100000,
         "default_qty": 1
+    },
+    "904793": {
+        "name": "Train",
+        "cost": 116114097105110,
+        "boost": 237357047891,
+        "default_qty": 20
+    },
+    "286746": {
+        "name": "USS Enterprise",
+        "cost": 170122452285,
+        "boost": 394787180,
+        "default_qty": 14
     },
     "-1": {
         "name": "Virus",
