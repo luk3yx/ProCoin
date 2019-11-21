@@ -41,7 +41,7 @@ class Item:
     def prefixed_name(self) -> str:
         res: str = ''
         if self.cursed:
-            res = '**[Cursed]** '
+            res = '**💀** '
         elif self.raw_merges:
             # A prefix for merged items
             res = '**M** '
