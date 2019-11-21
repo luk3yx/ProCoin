@@ -128,7 +128,8 @@ class User:
         items = self.store.items
         inv_string = f'Balance: {format_currency(self.balance)}\r\n'
         total_items: int = 0
-        for item in sorted(self.inventory, key=items.get_name):
+        for item in sorted(self.inventory,
+                key=lambda i : items.get_name(i).lower()):
             # The diamond prefix is handled in items.py, no need to worry about
             # it here.
             amount = self.inventory[item]
