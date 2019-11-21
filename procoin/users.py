@@ -80,14 +80,19 @@ class User:
         if qty > actual_amount:
             raise Error(f'You only have {actual_amount} `{item}`'
                         f'{"" if actual_amount == 1 else "s"}, not {qty}!')
+        if item.cursed:
+            raise Error('You cannot remove cursed items!')
 
     # Deletes an item from the user's inventory and subtracts the boost.
-    def take_item(self, item: items.Item, qty: int) -> None:
+    def take_item(self, item: items.Item, qty: int, *,
+            ignore_cursed: bool = False) -> None:
         assert qty > 0
         actual_amount = self.inventory.get(item.id, 0)
         if qty > actual_amount:
             raise Error(f'You only have {actual_amount} `{item}`'
                         f'{"" if actual_amount == 1 else "s"}, not {qty}!')
+        if item.cursed and not ignore_cursed:
+            raise Error('You cannot remove cursed items!')
 
         actual_amount -= qty
         if actual_amount > 0:
@@ -114,7 +119,7 @@ class User:
     def add_boost(self) -> None:
         t = time.time()
         if t >= self._next_boost + 20:
-            self.balance += self.boost
+            self.balance += max(self.boost, 0)
             self._next_boost = t + 20
 
     # Apparently \r\n is larger than \n but smaller than \n\n.

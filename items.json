@@ -1,4 +1,11 @@
 {
+    "-1": {
+        "name": "The soul of piesquared",
+        "cost": 0,
+        "boost": -2,
+        "default_qty": 0,
+        "cursed": true
+    },
     "141-year-old newspaper": {
         "name": "141-year-old newspaper",
         "cost": 230000000,

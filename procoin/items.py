@@ -10,15 +10,18 @@ prefixes: Tuple[Tuple[int, str], ...] = (
     (1_000_000, '$'),
 )
 class Item:
-    __slots__ = ('id', 'name', 'cost', 'boost', 'default_qty', 'raw_merges')
+    __slots__ = ('id', 'name', 'cost', 'boost', 'default_qty', 'raw_merges',
+        'cursed')
     def __init__(self, id: str, name: str, cost: int, boost: int,
-            default_qty: int, raw_merges: List[List[str]]) -> None:
+            default_qty: int, raw_merges: List[List[str]], cursed: bool) \
+            -> None:
         self.id = id
         self.name = name
         self.cost = cost
         self.boost = boost
         self.default_qty = default_qty
         self.raw_merges = raw_merges
+        self.cursed = cursed
 
     def __str__(self) -> str:
         return self.name
@@ -37,7 +40,9 @@ class Item:
     @property
     def prefixed_name(self) -> str:
         res: str = ''
-        if self.raw_merges:
+        if self.cursed:
+            res = '**[Cursed]** '
+        elif self.raw_merges:
             # A prefix for merged items
             res = '**M** '
         elif self.stockable:
@@ -61,7 +66,7 @@ class Item:
     def to_dict(self) -> Dict[str, Union[str, int, List[List[str]]]]:
         return {'id': self.id, 'name': self.name, 'cost': self.cost,
                 'boost': self.boost, 'default_qty': self.default_qty,
-                'merges': self.raw_merges}
+                'merges': self.raw_merges, 'cursed': self.cursed}
 
     # Creates an Item from a dict (similar to Item.to_dict()).
     # This treats "default quantity" as an alias for "default_qty" for
@@ -82,7 +87,8 @@ class Item:
         for merge in raw_merges:
             assert isinstance(merge, list)
             assert all(isinstance(i, str) for i in merge)
-        return cls(id, name, cost, boost, default_qty, raw_merges)
+        return cls(id, name, cost, boost, default_qty, raw_merges,
+            bool(data.get('cursed', False)))
 
 
 # An ItemInterface will allow the program to work with all
