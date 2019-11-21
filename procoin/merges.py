@@ -71,8 +71,11 @@ class MergeInterface:
             raise Error(f"You can't merge {names}!")
 
         # Ensure a user has every item first
+        required_items: Dict[Item, int] = {}
         for item in items:
-            user.assert_has_item(item, amount)
+            required_items[item] = required_items.get(item, 0) + amount
+        for item, qty in required_items.items():
+            user.assert_has_item(item, qty)
 
         idx: int = 0
         try:
