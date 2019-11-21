@@ -63,7 +63,7 @@ class Item:
             res += f', provides a boost of {format_currency(self.boost)}'
         return res + ')'
 
-    def to_dict(self) -> Dict[str, Union[str, int, List[List[str]]]]:
+    def to_dict(self) -> Dict[str, Union[str, int, bool, List[List[str]]]]:
         return {'id': self.id, 'name': self.name, 'cost': self.cost,
                 'boost': self.boost, 'default_qty': self.default_qty,
                 'merges': self.raw_merges, 'cursed': self.cursed}
