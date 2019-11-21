@@ -139,6 +139,10 @@ class BotInterface(Cog, name='General commands'):
             return
         msg: str = f'Cost: {format_currency(item.cost)}\n' \
                    f'Boost: {format_currency(item.boost)}'
+        if item.cursed:
+            msg += '\n\n*Cursed items painfully bind themselves to their ' \
+                'victim/owner and cannot be removed without a scroll of ' \
+                'remove curse (coming soon).*'
         embed = discord.Embed(title=item.prefixed_name, description=msg,
                               colour=0xfdd835)
         await ctx.send(embed=embed)
