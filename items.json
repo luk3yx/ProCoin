@@ -21,7 +21,10 @@
         "name": "A Great Disguise",
         "cost": 10000000,
         "boost": 29076,
-        "default_qty": 2
+        "default_qty": 0,
+        "merges": [
+            ["Kirk's Glasses", "Mario's Hat"]
+        ]
     },
     "A True Cake": {
         "name": "A True Cake",
@@ -51,13 +54,20 @@
         "name": "An Easy Win",
         "cost": 100000,
         "boost": 330,
-        "default_qty": 3
+        "default_qty": 0,
+        "merges": [
+            ["Winning Lottery Ticket", "Easy Button"]
+        ]
     },
     "Anduril": {
         "name": "Anduril",
         "cost": 150000,
         "boost": 490,
-        "default_qty": 1
+        "default_qty": 0,
+        "merges": [
+            ["Shards of Narsil", "Shards of Narsil", "Shards of Narsil",
+                "Shards of Narsil", "Shards of Narsil", "Shards of Narsil"]
+        ]
     },
     "Arc Reactor": {
         "name": "Arc Reactor",
@@ -111,7 +121,10 @@
         "name": "Blender (the world)",
         "cost": 279,
         "boost": 1,
-        "default_qty": 12
+        "default_qty": 0,
+        "merges": [
+            ["Blender (for food)", "Blender (the program)"]
+        ]
     },
     "Book": {
         "name": "Book",
@@ -189,7 +202,10 @@
         "name": "Debug Kilobyte",
         "cost": 1000,
         "boost": 4,
-        "default_qty": 256
+        "default_qty": 0,
+        "merges": [
+            ["Debug Byte", "Debug Byte"]
+        ]
     },
     "Diamond Armor": {
         "name": "Diamond Armor",
@@ -255,7 +271,11 @@
         "name": "Infinite Power",
         "cost": 66666666,
         "boost": 184738,
-        "default_qty": 1
+        "default_qty": 0,
+        "merges": [
+            ["Soul Stone", "Mind Stone", "Reality Stone", "Space Stone",
+                "Time Stone", "Power Stone"]
+        ]
     },
     "Infinity Gauntlet": {
         "name": "Infinity Gauntlet",
@@ -285,7 +305,10 @@
         "name": "KHAAAAAAAAAAN",
         "cost": 100000000,
         "boost": 274354,
-        "default_qty": 1
+        "default_qty": 0,
+        "merges": [
+            ["Genesis Device", "Kirk's Glasses"]
+        ]
     },
     "Kirk's Glasses": {
         "name": "Kirk's Glasses",
@@ -303,7 +326,10 @@
         "name": "Knight",
         "cost": 10000,
         "boost": 35,
-        "default_qty": 10
+        "default_qty": 0,
+        "merges": [
+            ["Sword", "Shield"]
+        ]
     },
     "Kryptonite": {
         "name": "Kryptonite",
@@ -340,6 +366,12 @@
         "cost": 2221819257185,
         "boost": 4895303336,
         "default_qty": 1
+    },
+    "Lottery Ticket": {
+        "name": "Lottery Ticket",
+        "cost": 10,
+        "boost": 0,
+        "default_qty": 0
     },
     "Magnetic Floating Bed": {
         "name": "Magnetic Floating Bed",
@@ -399,13 +431,19 @@
         "name": "Nuclear Missile",
         "cost": 5900000,
         "boost": 17393,
-        "default_qty": 10
+        "default_qty": 0,
+        "merges": [
+            ["Nuclear Bomb", "Rocket"]
+        ]
     },
     "Nuclear War": {
         "name": "Nuclear War",
         "cost": 1000000,
         "boost": 3092,
-        "default_qty": 2
+        "default_qty": 0,
+        "merges": [
+            ["Nuclear Missile", "Easy Button"]
+        ]
     },
     "Oculus": {
         "name": "Oculus",
@@ -435,7 +473,10 @@
         "name": "Popped Popcorn",
         "cost": 10000,
         "boost": 35,
-        "default_qty": 100
+        "default_qty": 0,
+        "merges": [
+            ["Popcorn", "Rocket"]
+        ]
     },
     "Power Stone": {
         "name": "Power Stone",
@@ -543,7 +584,10 @@
         "name": "The Avengers' Weapons",
         "cost": 10708070000,
         "boost": 26359853,
-        "default_qty": 1
+        "default_qty": 0,
+        "merges": [
+            ["Mjolnir", "Captain America's Shield"]
+        ]
     },
     "The Moon": {
         "name": "The Moon",
@@ -573,7 +617,10 @@
         "name": "Thor",
         "cost": 2011201700,
         "boost": 5139880,
-        "default_qty": 1
+        "default_qty": 1,
+        "merges": [
+            ["Mjolnir", "Stormbreaker"]
+        ]
     },
     "Time Machine": {
         "name": "Time Machine",
@@ -598,5 +645,11 @@
         "cost": 800000000,
         "boost": 3970009,
         "default_qty": 1
+    },
+    "Winning Lottery Ticket": {
+        "name": "Winning Lottery Ticket",
+        "cost": 10000,
+        "boost": 1,
+        "default_qty": 0
     }
 }

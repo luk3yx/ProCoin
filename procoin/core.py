@@ -1,11 +1,13 @@
-from . import db, items, store, users
+from . import db, items, merges, store, users
+from .items import Item as _Item
 from .store import CannotAffordError, Error, ItemNotFoundError
-from typing import Union
+from typing import List, Tuple, Union
 
 class ProCoin:
     items: items.ItemInterface
     store: store.Store
     users: users.UserInterface
+    merges: merges.MergeInterface
 
     def __init__(self, item_filename: str, user_filename: str) -> None:
         self.item_filename = item_filename
@@ -13,18 +15,19 @@ class ProCoin:
         self.load_all()
 
     def load_all(self) -> None:
-        self.load_item_file()
+        self._load_item_file()
         self.store = store.Store(self.items)
-        self.load_user_file()
+        self.merges = merges.MergeInterface(self.items)
+        self._load_user_file()
 
     # Loads the item file from the disk. This should probably modify
     # ProCoin.items directly.
-    def load_item_file(self) -> None:
+    def _load_item_file(self) -> None:
         self.items = items.ItemInterface.from_dict(db.load(self.item_filename))
 
     # Loads the users file from the disk. This should probably modify
     # ProCoin.users directly.
-    def load_user_file(self) -> None:
+    def _load_user_file(self) -> None:
         data = db.load(self.user_filename)
         self.users = users.UserInterface.from_dict(self.store, data)
 
@@ -112,6 +115,19 @@ class ProCoin:
             self.add_cash(target_uid, amount)
         except KeyError as exc:
             raise Error('Unknown user!') from exc
+
+    # Merges items and returns the item names and resulting item.
+    def merge(self, user_id: Union[str, int], item_strings: List[str],
+            amount: int) -> Tuple[str, _Item]:
+        item_list: List[_Item] = []
+        for item_string in item_strings:
+            item = self.items.lookup(item_string)
+            if not item:
+                raise ItemNotFoundError(item_string)
+            item_list.append(item)
+
+        user = self.users.get_or_create(user_id)
+        return self.merges.merge_item(user, item_list, amount)
 
     # Shows the store(?)
     # I think this does what it is meant to.

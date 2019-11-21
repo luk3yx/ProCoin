@@ -73,6 +73,14 @@ class User:
         self.balance -= total_cost
         self.add_item(item, qty)
 
+    # Ensures a user has an item.
+    def assert_has_item(self, item: items.Item, qty: int) -> None:
+        assert qty > 0
+        actual_amount = self.inventory.get(item.id, 0)
+        if qty > actual_amount:
+            raise Error(f'You only have {actual_amount} `{item}`'
+                        f'{"" if actual_amount == 1 else "s"}, not {qty}!')
+
     # Deletes an item from the user's inventory and subtracts the boost.
     def take_item(self, item: items.Item, qty: int) -> None:
         assert qty > 0

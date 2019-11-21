@@ -10,14 +10,15 @@ prefixes: Tuple[Tuple[int, str], ...] = (
     (1_000_000, '$'),
 )
 class Item:
-    __slots__ = ('id', 'name', 'cost', 'boost', 'default_qty')
+    __slots__ = ('id', 'name', 'cost', 'boost', 'default_qty', 'raw_merges')
     def __init__(self, id: str, name: str, cost: int, boost: int,
-            default_qty: int) -> None:
+            default_qty: int, raw_merges: List[List[str]]) -> None:
         self.id = id
         self.name = name
         self.cost = cost
         self.boost = boost
         self.default_qty = default_qty
+        self.raw_merges = raw_merges
 
     def __str__(self) -> str:
         return self.name
@@ -36,7 +37,10 @@ class Item:
     @property
     def prefixed_name(self) -> str:
         res: str = ''
-        if self.stockable:
+        if self.raw_merges:
+            # A prefix for merged items
+            res = '**M** '
+        elif self.stockable:
             # Get a prefix for expensive items.
             for min_cost, prefix in prefixes:
                 if self.cost >= min_cost:
@@ -54,9 +58,10 @@ class Item:
             res += f', provides a boost of {format_currency(self.boost)}'
         return res + ')'
 
-    def to_dict(self) -> Dict[str, Union[str, int]]:
+    def to_dict(self) -> Dict[str, Union[str, int, List[List[str]]]]:
         return {'id': self.id, 'name': self.name, 'cost': self.cost,
-                'boost': self.boost, 'default_qty': self.default_qty}
+                'boost': self.boost, 'default_qty': self.default_qty,
+                'merges': self.raw_merges}
 
     # Creates an Item from a dict (similar to Item.to_dict()).
     # This treats "default quantity" as an alias for "default_qty" for
@@ -67,12 +72,17 @@ class Item:
         cost = data['cost']
         boost = data['boost']
         default_qty = data.get('default_qty', data.get('default quantity', 0))
+        raw_merges = data.get('merges') or []
         assert isinstance(id, str)
         assert isinstance(name, str)
         assert isinstance(cost, int)
         assert isinstance(boost, int)
         assert isinstance(default_qty, int)
-        return cls(id, name, cost, boost, default_qty)
+        assert isinstance(raw_merges, list)
+        for merge in raw_merges:
+            assert isinstance(merge, list)
+            assert all(isinstance(i, str) for i in merge)
+        return cls(id, name, cost, boost, default_qty, raw_merges)
 
 
 # An ItemInterface will allow the program to work with all

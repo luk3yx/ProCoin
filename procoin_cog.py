@@ -1,6 +1,6 @@
 import discord # type: ignore
 from discord.ext import commands, tasks # type: ignore
-from typing import Any, Optional, Tuple, Union, TYPE_CHECKING
+from typing import Any, List, Optional, Tuple, Union, TYPE_CHECKING
 import os, time, traceback
 
 # TODO: Something better
@@ -19,7 +19,7 @@ else:
 
 # Local imports
 from procoin.core import ProCoin
-from procoin.items import format_currency
+from procoin.items import Item, format_currency
 from procoin.store import Error
 from procoin.users import User
 
@@ -224,6 +224,35 @@ class BotInterface(Cog, name='General commands'):
         await ctx.send(f'{ctx.author.mention} gave <@{target_uid}> {qty} '
                        f'{self.pc.items.lookup(item_string)}'
                        f'{_plural(qty)}!')
+
+    @commands.command(help='Displays a list of possible merges.')
+    async def merges(self, ctx) -> None:
+        msg: str = self.pc.merges.get_merges()
+        embed = discord.Embed(title='Possible Merges:', description=msg,
+                      colour=0xfdd835)
+        await ctx.send(embed=embed)
+
+    @commands.command(help='Displays a list of possible merges.',
+                      usage='<upgrade 1>, <upgrade 2>, ... [amount]')
+    async def merge(self, ctx, *parameters: str) -> None:
+        items: List[str] = ' '.join(parameters).split(',')
+        if items:
+            p = tuple(items[-1].split(' '))
+            last_item, qty = self.__parse_item_and_quantity(p)
+            items[-1] = last_item
+        else:
+            qty = 1
+
+        names: str
+        result: Item
+        names, result = self.pc.merge(ctx.author.id, items, qty)
+
+        if qty > 1:
+            times = f' {qty} times'
+        else:
+            times = ''
+        await ctx.send(f'{ctx.author.mention} merged {names}{times} to make '
+                       f'{qty} {result.prefixed_name}{_plural(qty)}!')
 
     # This starts with two underscores to try and avoid conflicts with any
     # future commands.Cog internal function, the name will be mangled by
