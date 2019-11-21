@@ -391,13 +391,6 @@
         "boost": 8000,
         "default_qty": 1
     },
-    "-1": {
-        "name": "Major Bug",
-        "cost": 0,
-        "boost": -2,
-        "default_qty": 0,
-        "cursed": true
-    },
     "Mario's Hat": {
         "name": "Mario's Hat",
         "cost": 1019358,
@@ -652,6 +645,13 @@
         "cost": 1000000,
         "boost": 100000,
         "default_qty": 1
+    },
+    "-1": {
+        "name": "Virus",
+        "cost": 0,
+        "boost": -2,
+        "default_qty": 0,
+        "cursed": true
     },
     "Water Bottle": {
         "name": "Water Bottle",
