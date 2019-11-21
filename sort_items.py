@@ -53,6 +53,8 @@ def to_json(items: ItemInterface):
         if line.startswith(indent + '[') and len(line) >= 80:
             raw = json.dumps((((json.loads(line),),),), indent=4)
             lines[i] = '\n'.join(raw.strip().split('\n')[3:-3])
+            if line.endswith(','):
+                lines[i] += ','
 
     lines.append('')
     res = '\n'.join(lines)
