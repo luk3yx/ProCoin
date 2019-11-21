@@ -21,7 +21,8 @@ def _sort_item(item: Item) -> _ItemType:
     res['boost'] = item.boost
     res['default_qty'] = item.default_qty
     if item.raw_merges:
-        res['merges'] = sorted(item.raw_merges)
+        res['merges'] = sorted(map(lambda i : sorted(i, key=str.lower),
+            item.raw_merges))
     if item.cursed:
         res['cursed'] = item.cursed
     return res

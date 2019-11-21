@@ -56,7 +56,7 @@
         "boost": 330,
         "default_qty": 0,
         "merges": [
-            ["Winning Lottery Ticket", "Easy Button"]
+            ["Easy Button", "Winning Lottery Ticket"]
         ]
     },
     "Anduril": {
@@ -280,12 +280,12 @@
         "default_qty": 0,
         "merges": [
             [
-                "Soul Stone",
                 "Mind Stone",
+                "Power Stone",
                 "Reality Stone",
+                "Soul Stone",
                 "Space Stone",
-                "Time Stone",
-                "Power Stone"
+                "Time Stone"
             ]
         ]
     },
@@ -340,7 +340,7 @@
         "boost": 35,
         "default_qty": 0,
         "merges": [
-            ["Sword", "Shield"]
+            ["Shield", "Sword"]
         ]
     },
     "Kryptonite": {
@@ -461,7 +461,7 @@
         "boost": 3092,
         "default_qty": 0,
         "merges": [
-            ["Nuclear Missile", "Easy Button"]
+            ["Easy Button", "Nuclear Missile"]
         ]
     },
     "Oculus": {
@@ -605,7 +605,7 @@
         "boost": 26359853,
         "default_qty": 0,
         "merges": [
-            ["Mjolnir", "Captain America's Shield"]
+            ["Captain America's Shield", "Mjolnir"]
         ]
     },
     "The Moon": {
