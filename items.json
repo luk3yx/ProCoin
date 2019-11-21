@@ -709,12 +709,6 @@
         "boost": 4950,
         "default_qty": 1
     },
-    "470005": {
-        "name": "The Titanic",
-        "cost": 73950274947329,
-        "boost": 152422318597,
-        "default_qty": 1
-    },
     "The Tumbler Batmobile": {
         "name": "The Tumbler Batmobile",
         "cost": 1800000,
@@ -747,6 +741,13 @@
         "cost": 1000000,
         "boost": 100000,
         "default_qty": 1
+    },
+    "470005": {
+        "name": "Titanic",
+        "cost": 0,
+        "boost": -1912,
+        "default_qty": 0,
+        "cursed": true
     },
     "904793": {
         "name": "Train",
