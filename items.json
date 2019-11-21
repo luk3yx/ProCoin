@@ -409,6 +409,24 @@
         "boost": 2110,
         "default_qty": 1
     },
+    "412178": {
+        "name": "LibreOffice Calc",
+        "cost": 100000000,
+        "boost": 274354,
+        "default_qty": 1
+    },
+    "077559": {
+        "name": "LibreOffice Impress",
+        "cost": 100000000,
+        "boost": 274354,
+        "default_qty": 1
+    },
+    "315205": {
+        "name": "LibreOffice Writer",
+        "cost": 100000000,
+        "boost": 274354,
+        "default_qty": 1
+    },
     "Lightsaber": {
         "name": "Lightsaber",
         "cost": 300000,
@@ -461,24 +479,6 @@
         "name": "Meme",
         "cost": 1755841378694,
         "boost": 3886619829,
-        "default_qty": 1
-    },
-    "412178": {
-        "name": "Microsoft Excel",
-        "cost": 100000000,
-        "boost": 274354,
-        "default_qty": 1
-    },
-    "077559": {
-        "name": "Microsoft Powerpoint",
-        "cost": 100000000,
-        "boost": 274354,
-        "default_qty": 1
-    },
-    "315205": {
-        "name": "Microsoft Word",
-        "cost": 100000000,
-        "boost": 274354,
         "default_qty": 1
     },
     "Mind Stone": {
@@ -763,7 +763,7 @@
     "-1": {
         "name": "Virus",
         "cost": 0,
-        "boost": -2,
+        "boost": -256,
         "default_qty": 0,
         "cursed": true
     },
