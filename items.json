@@ -600,7 +600,7 @@
     },
     "remove_curse": {
         "name": "Scroll of Remove Curse",
-        "cost": 66666666,
+        "cost": 60000000,
         "boost": -500,
         "default_qty": 0,
         "merges": [
