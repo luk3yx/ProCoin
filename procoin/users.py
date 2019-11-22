@@ -123,10 +123,10 @@ class User:
             self._next_boost = t + 20
 
     # Apparently \r\n is larger than \n but smaller than \n\n.
-    @property
-    def inv(self) -> str:
+    def get_inventory(self) -> List[str]:
         items = self.store.items
-        inv_string = f'Balance: {format_currency(self.balance)}\r\n'
+        inv_string = inv_prefix = \
+            f'Balance: {format_currency(self.balance)}\n\n'
         total_items: int = 0
         for item in sorted(self.inventory,
                 key=lambda i : items.get_name(i).lower()):
@@ -136,17 +136,23 @@ class User:
             inv_string += f'`{amount}x` {items.get_prefixed_name(item)}: ' \
                           f'{format_currency(items.get_boost(item))}\n'
             total_items += amount
-        footer = f'\r\nTotal items: {total_items:,}' \
+        footer = f'\nTotal items: {total_items:,}' \
                  f'\nTotal boost: {format_currency(self.boost)}'
 
-        # Replace excess items with ellipsis.
-        # TODO: A multi-paged inventory.
-        if len(inv_string) + len(footer) > 2048:
-            while len(inv_string) + len(footer) > 2043:
-                inv_string = inv_string.rsplit('\n', 1)[0]
-            inv_string += '\n...\n'
+        pages = []
+        footer_l = len(footer)
+        while len(inv_string) + footer_l > 2048:
+            n = inv_string[:2048 - footer_l].rsplit('\n', 1)
+            pages.append(n[0] + '\n' + footer)
+            inv_string = inv_prefix + (n[1] if len(n) > 1 else '') + \
+                inv_string[2048 - footer_l:]
+        pages.append(inv_string + footer)
 
-        return inv_string + footer
+        return pages
+
+    @property
+    def inv(self) -> str:
+        return self.get_inventory()[0]
 
 class UserInterface:
     __slots__ = ('store', 'users')

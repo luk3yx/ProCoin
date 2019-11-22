@@ -1,4 +1,4 @@
-import discord # type: ignore
+import asyncio, discord # type: ignore
 from discord.ext import commands, tasks # type: ignore
 from typing import Any, List, Optional, Tuple, Union, TYPE_CHECKING
 import os, time, traceback
@@ -125,9 +125,17 @@ class BotInterface(Cog, name='General commands'):
             return
 
         username: str = self.get_username(user)
+        pages = user.get_inventory()
         embed = discord.Embed(title=f"{username}'s inventory.",
-            description=user.inv, colour=0xfdd835)
-        await ctx.send(embed=embed)
+            description=pages[0], colour=0xfdd835)
+        msg = await ctx.send(embed=embed)
+        if len(pages) < 2:
+            return
+        await msg.add_reaction('◀️')
+        await msg.add_reaction('▶️')
+        embed.set_image(url=f'{self.__img}#INV:1:{user.id}')
+        embed.set_footer(text=f'Page 1 of {len(pages)}')
+        await msg.edit(embed=embed)
 
     @commands.command(help='Gives information on an item.',
                       usage='<item name>')
@@ -322,6 +330,50 @@ class BotInterface(Cog, name='General commands'):
             embed.set_footer(text='A full traceback has been written to '
                 'stderr.')
             await ctx.send(embed=embed)
+
+    __img = 'https://upload.wikimedia.org/wikipedia/commons/c/ca/1x1.png'
+    @Cog.listener()
+    async def on_reaction_add(self, reaction, user) -> None:
+        message = reaction.message
+        if message.author.id != self.bot.user.id or not reaction.me:
+            return
+
+        # Get the emoji
+        emoji = str(reaction.emoji)
+        if emoji not in ('◀️', '▶️') or len(message.embeds) != 1:
+            return
+
+        # Get the URL
+        embed = message.embeds[0]
+        if not embed.image or not embed.image.url.startswith(self.__img +
+                '#INV:'):
+            return
+
+        # Parse the URL
+        try:
+            page_s, user_id = embed.image.url.rsplit('#INV:', 1)[-1].split(':', 1)
+            page = int(page_s)
+        except ValueError:
+            return
+        page = max(page + (emoji == '▶️') * 2 - 1, 1)
+
+        # Set the page
+        user = self.pc.users.get_or_create(user_id)
+        pages = user.get_inventory()
+        page = min(len(pages), page)
+        embed.description = pages[page - 1]
+        embed.set_image(url=f'{self.__img}#INV:{page}:{user_id}')
+        embed.set_footer(text=f'Page {page} of {len(pages)}')
+        asyncio.ensure_future(message.edit(embed=embed))
+
+        # Remove reactions
+        async for user in reaction.users():
+            if user.id == self.bot.user.id:
+                continue
+            try:
+                await message.remove_reaction(reaction.emoji, user)
+            except discord.Forbidden:
+                break
 
     # Save the user file (and block) when the cog is unloaded. This has to
     # block as otherwise reloads might lose data.
