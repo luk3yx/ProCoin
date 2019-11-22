@@ -143,6 +143,7 @@ class User:
         footer_l = len(footer)
         while len(inv_string) + footer_l > 2048:
             n = inv_string[:2048 - footer_l].rsplit('\n', 1)
+            assert n
             pages.append(n[0] + '\n' + footer)
             inv_string = inv_prefix + (n[1] if len(n) > 1 else '') + \
                 inv_string[2048 - footer_l:]
