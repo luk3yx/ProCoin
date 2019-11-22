@@ -598,6 +598,15 @@
         "boost": 84,
         "default_qty": 10
     },
+    "remove_curse": {
+        "name": "Scroll of Remove Curse",
+        "cost": 66666666,
+        "boost": -500,
+        "default_qty": 0,
+        "merges": [
+            ["Anduril", "Infinite Power", "Medpack"]
+        ]
+    },
     "129274": {
         "name": "Self-Destruct Button",
         "cost": 107097066079079000,

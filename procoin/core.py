@@ -1,7 +1,8 @@
 from . import db, items, merges, store, users
 from .items import Item as _Item
 from .store import CannotAffordError, Error, ItemNotFoundError
-from typing import List, Tuple, Union
+from typing import List, Optional, Tuple, Union
+import random
 
 class ProCoin:
     items: items.ItemInterface
@@ -128,6 +129,48 @@ class ProCoin:
 
         user = self.users.get_or_create(user_id)
         return self.merges.merge_item(user, item_list, amount)
+
+    # Uses a scroll of remove curse a user has to remove a cursed item. Will
+    # return the item removed and (optionally) the random removed item.
+    def remove_curse(self, user_id: Union[str, int]) \
+            -> Tuple[_Item, Optional[_Item]]:
+        user = self.users.get_or_create(user_id)
+        scroll = self.items.get_item('remove_curse')
+        user.assert_has_item(scroll, 1)
+
+        cursed_items = []
+        not_cursed = []
+        for item_id in user.inventory:
+            item: _Item = self.items.get_item(item_id)
+            if item.cursed:
+                cursed_items.append(item)
+            else:
+                not_cursed.append(item)
+
+        if not cursed_items:
+            raise Error('You cannot use a scroll of remove curse when you '
+                'do not have a cursed item!')
+        if user.balance > 1_500_000_000:
+            raise Error('The scroll of remove curse senses that you are too '
+                'rich and refuses to operate.')
+        cursed_item = random.choice(cursed_items)
+
+        # Take a random item sometimes
+        removed_item: Optional[_Item] = None
+        if (user.balance > 500_000_000 or random.randrange(3) == 0) and \
+                not_cursed:
+            removed_item = random.choice(not_cursed)
+            user.take_item(removed_item, 1)
+
+        # Actually remove the curse
+        user.take_item(scroll, 1)
+        try:
+            user.take_item(cursed_item, 1, ignore_cursed=True)
+        except:
+            user.add_item(scroll, 1)
+            raise
+
+        return cursed_item, removed_item
 
     # Shows the store(?)
     # I think this does what it is meant to.

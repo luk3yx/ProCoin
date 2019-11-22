@@ -44,7 +44,10 @@ class Item:
             res = '**💀** '
         elif self.raw_merges:
             # A prefix for merged items
-            res = '**M** '
+            if self.id == 'remove_curse':
+                res = '**📜** '
+            else:
+                res = '**M** '
         elif self.stockable:
             # Get a prefix for expensive items.
             for min_cost, prefix in prefixes:

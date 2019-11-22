@@ -142,7 +142,8 @@ class BotInterface(Cog, name='General commands'):
         if item.cursed:
             msg += '\n\n*Cursed items painfully bind themselves to their ' \
                 'victim/owner and cannot be removed without a scroll of ' \
-                'remove curse (coming soon).*'
+                f'remove curse (see {self.bot.command_prefix}help ' \
+                f'remove_curse).*'
         embed = discord.Embed(title=item.prefixed_name, description=msg,
                               colour=0xfdd835)
         await ctx.send(embed=embed)
@@ -257,6 +258,22 @@ class BotInterface(Cog, name='General commands'):
             times = ''
         await ctx.send(f'{ctx.author.mention} merged {names}{times} to make '
                        f'{qty} {result.prefixed_name}{_plural(qty)}!')
+
+    @commands.command(brief='Uses a scroll of remove curse.',
+                      help='Uses a scroll of remove curse. You cannot control '
+                           'which item the scroll will cleanse, and there is '
+                           'a chance it will take a random item with it.',
+                      usage='')
+    async def remove_curse(self, ctx, *parameters: str) -> None:
+        if any(parameters):
+            raise Error('This command takes no parameters!')
+        item, removed_item = self.pc.remove_curse(ctx.author.id)
+        if removed_item:
+            await ctx.send(f'The cursed item resists your scroll, and is '
+                           f'eventually removed, but not before it can '
+                           f'destroy your {removed_item.prefixed_name}!')
+        await ctx.send(f'{ctx.author.mention} used a scroll of remove curse '
+                       f'to remove 1 {item.prefixed_name}!')
 
     # This starts with two underscores to try and avoid conflicts with any
     # future commands.Cog internal function, the name will be mangled by
