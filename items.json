@@ -773,7 +773,7 @@
     "-1": {
         "name": "Virus",
         "cost": 0,
-        "boost": -256,
+        "boost": -1048576,
         "default_qty": 0,
         "cursed": true
     },
