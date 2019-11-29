@@ -64,8 +64,8 @@
     },
     "An Easy Win": {
         "name": "An Easy Win",
-        "cost": 100000,
-        "boost": 330,
+        "cost": 10000000,
+        "boost": 33000,
         "default_qty": 0,
         "merges": [
             ["Easy Button", "Winning Lottery Ticket"]
@@ -74,7 +74,7 @@
     "Anduril": {
         "name": "Anduril",
         "cost": 150000,
-        "boost": 490,
+        "boost": 693,
         "default_qty": 0,
         "merges": [
             [
@@ -144,7 +144,7 @@
     "Blender (the world)": {
         "name": "Blender (the world)",
         "cost": 279,
-        "boost": 1,
+        "boost": 3195,
         "default_qty": 0,
         "merges": [
             ["Blender (for food)", "Blender (the program)"]
@@ -372,8 +372,8 @@
     },
     "Knight": {
         "name": "Knight",
-        "cost": 10000,
-        "boost": 35,
+        "cost": 20000,
+        "boost": 142,
         "default_qty": 0,
         "merges": [
             ["Shield", "Sword"]
@@ -528,8 +528,8 @@
     },
     "Nuclear War": {
         "name": "Nuclear War",
-        "cost": 1000000,
-        "boost": 3092,
+        "cost": 8000000,
+        "boost": 31092,
         "default_qty": 0,
         "merges": [
             ["Easy Button", "Nuclear Missile"]
