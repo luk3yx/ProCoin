@@ -230,6 +230,11 @@ class BotInterface(Cog, name='General commands'):
             return
         item_string, qty = self.__parse_item_and_quantity(parameters)
 
+        # Delegate to the pay command if required
+        if not item_string:
+            await self.pay.callback(self, ctx, target_uid, qty)
+            return
+
         # Remove the @mention wrapper from the UID
         target_uid = target_uid.strip(' <@!>')
 
