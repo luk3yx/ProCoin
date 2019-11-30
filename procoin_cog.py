@@ -248,7 +248,7 @@ class BotInterface(Cog, name='General commands'):
     @commands.command(help='Displays a list of possible merges.',
                       usage='<upgrade 1>, <upgrade 2>, ... [amount]')
     async def merge(self, ctx, *parameters: str) -> None:
-        items: List[str] = ' '.join(parameters).split(',')
+        items: List[str] = ' '.join(parameters).replace('+', ',').split(',')
         if items:
             p = tuple(items[-1].split(' '))
             last_item, qty = self.__parse_item_and_quantity(p)
