@@ -7,9 +7,15 @@ import collections, json, os, random, sys
 from procoin.items import Item, ItemInterface
 from procoin.store import Store
 from procoin.users import User, UserInterface
-from typing import Any, Dict, Iterator, List, Union
+from typing import Any, Dict, Iterator, List, Set, Union
 
-import yaml
+try:
+    from ruamel.yaml import YAML
+except ImportError:
+    import yaml
+else:
+    yaml = YAML(typ='safe') # type: ignore
+    del YAML
 
 # Fix weirdness in item names
 def fix_item_name(item_name) -> Iterator[str]:
@@ -34,7 +40,7 @@ def main(*, dir: str = os.path.dirname(__file__)):
     # Caches items
     cached_items: Dict[str, Item] = {}
 
-    unknown_items = set()
+    unknown_items: Set[str] = set()
 
     # Iterate over the users
     print('Converting...')
