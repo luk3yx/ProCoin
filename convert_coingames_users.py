@@ -19,8 +19,6 @@ def fix_item_name(item_name) -> Iterator[str]:
     yield item_name.replace("'", ' ')
     yield item_name.replace("'", "'s")
 
-removed_items = {'Coin'}
-
 def main(*, dir: str = os.path.dirname(__file__)):
     # Get the ItemInterface
     with open(os.path.join(dir, 'items.json'), 'r') as f:
