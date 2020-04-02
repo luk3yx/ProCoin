@@ -1,0 +1,26 @@
+{
+    "450275": {
+        "name": "For Loop",
+        "cost": 4500,
+        "boost": 500,
+        "default_qty": 1000
+    },
+    "671479": {
+        "name": "For-Each Loop",
+        "cost": 8000,
+        "boost": 1000,
+        "default_qty": 1000
+    },
+    "347581": {
+        "name": "If-Else",
+        "cost": 1000,
+        "boost": 100,
+        "default_qty": 1000
+    },
+    "586597": {
+        "name": "Recursion",
+        "cost": 70000,
+        "boost": 10000,
+        "default_qty": 1000
+    }
+}
