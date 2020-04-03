@@ -1,4 +1,5 @@
 import discord # type: ignore
+import time
 from discord.ext import commands # type: ignore
 from random import choice, randint
 from typing import Dict, List, Optional
@@ -8,14 +9,24 @@ from procoin_cog import Cog
 from procoin.core import ProCoin
 from procoin.items import Item
 
+class _SpamCounter:
+    __slots__ = ('author_id', 'messages', 'expiry')
+    def __init__(self, author_id: int):
+        self.author_id = author_id
+        self.messages = 0
+        self.expiry = time.time() + 10
+
+    def is_valid_for(self, author_id: int):
+        return author_id == self.author_id and self.expiry > time.time()
 
 class Sweepstakes(Cog):
-    __slots__ = ('bot', 'next_event', 'next_item', 'in_race')
+    __slots__ = ('bot', 'next_event', 'next_item', 'in_race', 'spam_count')
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
         self.next_event = 0
         self.__set_timer()
         self.next_item: Optional[Item] = None
+        self.spam_count: Dict[int, _SpamCounter] = {}
         self.in_race = False
 
     @property
@@ -24,10 +35,29 @@ class Sweepstakes(Cog):
         assert cog
         return cog.pc
 
+    # Reward people who spam with cursed items
+    async def __check_for_spam(self, message) -> None:
+        spam_count = self.spam_count.get(message.guild.id)
+
+        if not spam_count or not spam_count.is_valid_for(message.author.id):
+            spam_count = _SpamCounter(message.author.id)
+            self.spam_count[message.guild.id] = spam_count
+
+        spam_count.messages += 1
+        if spam_count.messages < 7 or randint(0, 2):
+            return
+
+        old_item = self.next_item
+        self.__set_cursed_item()
+        await self.do_sweepstake(message)
+        self.next_item = old_item
+
     @commands.Cog.listener()
     async def on_message(self, message) -> None:
         if message.author.bot or message.guild is None:
             return
+
+        await self.__check_for_spam(message)
 
         if self.in_race:
             if self.bot.user.mentioned_in(message):
@@ -76,6 +106,10 @@ class Sweepstakes(Cog):
 
     def __set_new_item(self) -> None:
         items = tuple(self.pc.items.filter_by(self.__item_filter))
+        self.next_item = choice(items)
+
+    def __set_cursed_item(self) -> None:
+        items = tuple(self.pc.items.filter_by(lambda item : item.cursed))
         self.next_item = choice(items)
 
     def __set_timer(self) -> None:

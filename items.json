@@ -541,6 +541,13 @@
         "boost": 199,
         "default_qty": 10
     },
+    "420507": {
+        "name": "Pandemic",
+        "cost": 0,
+        "boost": -1073741824,
+        "default_qty": 0,
+        "cursed": true
+    },
     "Pet Dragon": {
         "name": "Pet Dragon",
         "cost": 630000,
