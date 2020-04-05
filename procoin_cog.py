@@ -150,8 +150,7 @@ class BotInterface(Cog, name='General commands'):
         if item.cursed:
             msg += '\n\n*Cursed items painfully bind themselves to their ' \
                 'victim/owner and cannot be removed without a scroll of ' \
-                f'remove curse (see {self.bot.command_prefix}help ' \
-                f'remove_curse).*'
+                f'remove curse (see {ctx.prefix}help remove_curse).*'
         embed = discord.Embed(title=item.prefixed_name, description=msg,
                               colour=0xfdd835)
         await ctx.send(embed=embed)
@@ -314,7 +313,7 @@ class BotInterface(Cog, name='General commands'):
     @Cog.listener()
     async def on_command_error(self, ctx, error: BaseException) -> None:
         if isinstance(error, commands.CommandNotFound):
-            await ctx.send(f'Invalid command! Use {self.bot.command_prefix}'
+            await ctx.send(f'Invalid command! Use {ctx.prefix}'
                            f'help for a list of commands.')
         elif isinstance(error, commands.UserInputError):
             if isinstance(error, commands.MissingRequiredArgument):
@@ -322,7 +321,7 @@ class BotInterface(Cog, name='General commands'):
             else:
                 msg = 'Invalid command invocation!'
             await ctx.send(f'{msg} Try `'
-                           f'{self.bot.command_prefix}help {ctx.command.name}'
+                           f'{ctx.prefix}help {ctx.command.name}'
                            f'` for more information.')
         elif isinstance(error, commands.CheckFailure):
             await ctx.send('Permission denied!')
