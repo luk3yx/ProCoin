@@ -150,14 +150,11 @@ class ProCoin:
         if not cursed_items:
             raise Error('You cannot use a scroll of remove curse when you '
                 'do not have a cursed item!')
-        if user.balance > 1_500_000_000:
-            raise Error('The scroll of remove curse senses that you are too '
-                'rich and refuses to operate.')
         cursed_item = random.choice(cursed_items)
 
         # Take a random item sometimes
         removed_item: Optional[_Item] = None
-        if (user.balance > 500_000_000 or random.randrange(3) == 0) and \
+        if (user.balance > 1_500_000_000 or random.randrange(3) == 0) and \
                 not_cursed:
             removed_item = random.choice(not_cursed)
             user.take_item(removed_item, 1)
