@@ -49,7 +49,6 @@ class BotInterface(Cog, name='General commands'):
         # Default username
         return '#' + user.id
 
-    # TODO: Permission checks
     @commands.is_owner()
     @commands.command(help='Reloads the bot.', hidden=True)
     async def reload(self, ctx) -> None:
@@ -61,9 +60,6 @@ class BotInterface(Cog, name='General commands'):
             raise
         else:
             await ctx.message.add_reaction('✅')
-        finally:
-            if self.bot.user:
-                await ctx.message.remove_reaction('⌛', self.bot.user)
 
     @commands.is_owner()
     @commands.command(help='Starts a debugging shell.', hidden=True)
