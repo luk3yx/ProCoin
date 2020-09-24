@@ -177,6 +177,8 @@ class BotInterface(Cog, name='General commands'):
         item_string, qty = self.__parse_item_and_quantity(parameters)
 
         total_cost = self.pc.buy(ctx.author.id, item_string, qty)
+        if not self.pc.store.current_stock:
+            self.__update_store.restart()
         await ctx.send(f'{ctx.author.mention} bought {qty}'\
                        f' {self.pc.items.lookup(item_string)}{_plural(qty)}'
                        f' for {format_currency(total_cost)}.')
@@ -200,10 +202,6 @@ class BotInterface(Cog, name='General commands'):
 
     @commands.command(help='Displays the store.')
     async def store(self, ctx) -> None:
-        # Auto-regenerate the store if it is empty
-        if not self.pc.store.current_stock:
-            self.pc.store.regenerate_store(update_last_time=False)
-
         next_update = self.pc.store.last_update + 3600
         delay = round(max(next_update - time.time(), 0) / 60)
         msg: str = self.pc.store.store_string

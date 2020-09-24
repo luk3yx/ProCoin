@@ -98,7 +98,7 @@ class Store:
     def _not_bigitem(self, item: Item) -> bool:
         return item.stockable and item.cost < big_item_bound
 
-    def regenerate_store(self, *, update_last_time: bool = True) -> None:
+    def regenerate_store(self) -> None:
         self.current_stock.clear()
 
         # Ensure that random.sample() doesn't error if there are very few
@@ -111,5 +111,4 @@ class Store:
         for item in random.sample(self.big_items, big_items):
             self.current_stock[item] = item.default_qty
 
-        if update_last_time:
-            self.last_update = time.time()
+        self.last_update = time.time()
