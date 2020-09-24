@@ -293,11 +293,6 @@ class BotInterface(Cog, name='General commands'):
     # Python transparently.
     @tasks.loop(minutes=60.0)
     async def __update_store(self) -> None:
-        # Don't regenerate the store if it has been too soon since the last
-        # regeneration.
-        if self.store.last_update + 30 > time.time():
-            return
-
         # Save the user database (in another thread)
         self.pc.save_user_file()
 
