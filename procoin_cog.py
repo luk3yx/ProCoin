@@ -202,8 +202,7 @@ class BotInterface(Cog, name='General commands'):
     async def store(self, ctx) -> None:
         # Auto-regenerate the store if it is empty
         if not self.pc.store.current_stock:
-            self.pc.store.regenerate_store()
-            self.__update_store.restart()
+            self.pc.store.regenerate_store(update_last_time=False)
 
         next_update = self.pc.store.last_update + 3600
         delay = round(max(next_update - time.time(), 0) / 60)
