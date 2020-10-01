@@ -403,6 +403,15 @@
         "boost": 1,
         "default_qty": 100
     },
+    "620910": {
+        "name": "Lego Death Star",
+        "cost": 13414339,
+        "boost": 17324,
+        "default_qty": 0,
+        "merges": [
+            ["Death Star", "Lego Brick"]
+        ]
+    },
     "Legolas' Bow": {
         "name": "Legolas's Bow",
         "cost": 301800,
