@@ -41,9 +41,9 @@ class MergeInterface:
     # Gets a list of merges for the "merges" command.
     def get_merges(self) -> str:
         res: List[str] = []
-        for merge in self.merges:
+        for merge, result in self.merges.items():
             items = sorted(item.name for item in merge)
-            res.append('`' + '` + `'.join(items) + '`')
+            res.append(f"`{'` + `'.join(items)}` → {result}")
         res.sort()
         return '\n'.join(res)
 
