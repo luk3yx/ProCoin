@@ -73,6 +73,8 @@ class Store:
         # Remove out-of-stock items from the store.
         if self.current_stock[item] == 0:
             del self.current_stock[item]
+            if not self.current_stock:
+                self.regenerate_store()
 
     def sell(self, item: Item, qty: int) -> None:
         # Can't request less than 1 item.
