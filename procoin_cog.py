@@ -106,8 +106,8 @@ class BotInterface(Cog, name='General commands'):
                        f'{format_currency(user.boost)}')
 
     @commands.command(aliases=['inventory'], help="Gets a user's inventory.",
-                      usage='[@mention]')
-    async def inv(self, ctx, target_uid: str = '') -> None:
+                      usage='[@mention] [page]')
+    async def inv(self, ctx, target_uid: str = '', page: int = 1) -> None:
         target_uid = target_uid.strip(' <@!>')
 
         user: Optional[User]
@@ -122,15 +122,16 @@ class BotInterface(Cog, name='General commands'):
 
         username: str = self.get_username(user)
         pages = user.get_inventory()
+        page = min(max(page, 1), len(pages))
         embed = discord.Embed(title=f"{username}'s inventory.",
-            description=pages[0], colour=0xfdd835)
+            description=pages[page - 1], colour=0xfdd835)
         msg = await ctx.send(embed=embed)
         if len(pages) < 2:
             return
         await msg.add_reaction('◀️')
         await msg.add_reaction('▶️')
-        embed.set_image(url=f'{self.__img}#INV:1:{user.id}')
-        embed.set_footer(text=f'Page 1 of {len(pages)}')
+        embed.set_image(url=f'{self.__img}#INV:{page}:{user.id}')
+        embed.set_footer(text=f'Page {page} of {len(pages)}')
         await msg.edit(embed=embed)
 
     @commands.command(help='Gives information on an item.',
