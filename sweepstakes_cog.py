@@ -102,7 +102,7 @@ class Sweepstakes(Cog):
     # I'm scared discord.py is going to add functions starting with a single
     # underscore.
     def __item_filter(self, item: Item) -> bool:
-        return item.cost < 1_000_000_000
+        return item.cost < 1_000_000_000 and not item.cursed
 
     def __set_new_item(self) -> None:
         items = tuple(self.pc.items.filter_by(self.__item_filter))

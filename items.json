@@ -617,7 +617,7 @@
     "remove_curse": {
         "name": "Scroll of Remove Curse",
         "cost": 60000000,
-        "boost": -500,
+        "boost": 2020,
         "default_qty": 0,
         "merges": [
             ["Anduril", "Infinite Power", "Medpack"]
