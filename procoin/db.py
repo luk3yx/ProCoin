@@ -1,6 +1,6 @@
 # ProCoin database methods
 
-import json, threading
+import json, os, tempfile, threading
 from typing import Any, Dict
 
 _lock = threading.Lock()
@@ -18,8 +18,20 @@ def load(filename: str) -> Dict[Any, Any]:
 # Save JSON data to a file in another thread. This stops the file operation
 # from blocking.
 def _raw_save(filename: str, raw: str) -> None:
-    with _lock, open(filename, 'w') as f:
-        f.write(raw)
+    with _lock:
+        # Atomic save
+        with tempfile.NamedTemporaryFile('w', dir=os.path.dirname(filename),
+                delete=False) as f:
+            f.write(raw)
+            tmpfn = f.name
+        try:
+            os.rename(tmpfn, filename)
+        except FileExistsError:
+            if os.path.exists(filename + '~'):
+                os.remove(filename + '~')
+            os.rename(filename, filename + '~')
+            os.rename(tmpfn, filename)
+            os.remove(filename + '~')
 
 # A blocking save() function
 def save_blocking(filename: str, data: Dict[str, Any]) -> None:
