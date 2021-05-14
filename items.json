@@ -616,11 +616,11 @@
     },
     "remove_curse": {
         "name": "Scroll of Remove Curse",
-        "cost": 60000000,
-        "boost": 2020,
-        "default_qty": 0,
+        "cost": 111111,
+        "boost": 555,
+        "default_qty": 1,
         "merges": [
-            ["Anduril", "Infinite Power", "Medpack"]
+            ["Medpack", "Water Bottle"]
         ]
     },
     "129274": {
