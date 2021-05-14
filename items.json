@@ -616,11 +616,11 @@
     },
     "remove_curse": {
         "name": "Scroll of Remove Curse",
-        "cost": 111111,
-        "boost": 555,
+        "cost": 300000,
+        "boost": 2020,
         "default_qty": 1,
         "merges": [
-            ["Medpack", "Water Bottle"]
+            ["Medpack", "Medpack", "Medpack", "Medpack", "Water Bottle"]
         ]
     },
     "129274": {
