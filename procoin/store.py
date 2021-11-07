@@ -1,5 +1,6 @@
+from __future__ import annotations
 import random, time
-from typing import Dict, List
+
 
 # Local imports
 from .items import Item, ItemInterface
@@ -30,13 +31,13 @@ class Store:
     def __init__(self, items: ItemInterface) -> None:
         self.items = items
 
-        self.big_items: List[Item] = \
+        self.big_items: list[Item] = \
             list(self.items.filter_by(self._is_bigitem))
 
-        self.small_items: List[Item] = \
+        self.small_items: list[Item] = \
             list(self.items.filter_by(self._not_bigitem))
 
-        self.current_stock: Dict[Item, int] = {}
+        self.current_stock: dict[Item, int] = {}
         # self.regenerate_store()
 
     def __str__(self) -> str:

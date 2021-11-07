@@ -1,8 +1,9 @@
+from __future__ import annotations
 import discord # type: ignore
 import time
 from discord.ext import commands # type: ignore
 from random import choice, randint
-from typing import Dict, List, Optional
+from typing import Optional
 
 # When type checking, procoin_cog.Cog is a dummy object so annotations work.
 from procoin_cog import Cog
@@ -26,7 +27,7 @@ class Sweepstakes(Cog):
         self.next_event = 0
         self.__set_timer()
         self.next_item: Optional[Item] = None
-        self.spam_count: Dict[int, _SpamCounter] = {}
+        self.spam_count: dict[int, _SpamCounter] = {}
         self.in_race = False
 
     @property

@@ -1,5 +1,6 @@
+from __future__ import annotations
 import math, random, time
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Optional, Union
 from . import items
 from .items import format_currency
 from .store import CannotAffordError, Error, Store as _Store
@@ -12,15 +13,15 @@ class User:
         self.balance: int = 1_000_000
         self.boost: int = 1
         self._next_boost: float = 0
-        self.inventory: Dict[str, int] = {}
+        self.inventory: dict[str, int] = {}
 
     # Convert the User object to a dict.
-    def to_dict(self) -> Dict[str, Union[int, Dict[str, int]]]:
+    def to_dict(self) -> dict[str, Union[int, dict[str, int]]]:
         return {'balance': self.balance, 'inventory': self.inventory}
 
     # Create a User object from a dict.
     @classmethod
-    def from_dict(cls, store: _Store, id: str, data: Dict[Any, Any]):
+    def from_dict(cls, store: _Store, id: str, data: dict[Any, Any]):
         balance = data['balance']
         inventory = data['inventory']
         assert isinstance(id, str)
@@ -123,7 +124,7 @@ class User:
             self._next_boost = t + 20
 
     # Apparently \r\n is larger than \n but smaller than \n\n.
-    def get_inventory(self) -> List[str]:
+    def get_inventory(self) -> list[str]:
         items = self.store.items
         inv_string = inv_prefix = \
             f'Balance: {format_currency(self.balance)}\n\n'
@@ -157,16 +158,16 @@ class User:
 
 class UserInterface:
     __slots__ = ('store', 'users')
-    def __init__(self, store: _Store, users: Dict[str, User]) -> None:
+    def __init__(self, store: _Store, users: dict[str, User]) -> None:
         self.store = store
         self.users = users
 
-    def to_dict(self) -> Dict[str, Dict[str, Union[int, Dict[str, int]]]]:
+    def to_dict(self) -> dict[str, dict[str, Union[int, dict[str, int]]]]:
         return {k: v.to_dict() for k, v in self.users.items()}
 
     @classmethod
     def from_dict(cls, store: _Store,
-            users: Dict[str, Dict[str, Union[int, Dict[str, int]]]]):
+            users: dict[str, dict[str, Union[int, dict[str, int]]]]):
         new_users = {k: User.from_dict(store, k, v) for k, v in users.items()}
         return cls(store, new_users)
 

@@ -1,4 +1,6 @@
-from typing import Collection, Dict, List, Optional, Tuple
+from __future__ import annotations
+from collections.abc import Collection
+from typing import Optional
 from .items import Item, ItemInterface
 from .store import Error
 from .users import User, UserInterface
@@ -8,13 +10,13 @@ class MergeInterface:
 
     def __init__(self, items: ItemInterface) -> None:
         self.items = items
-        self.merges: Dict[Tuple[Item, ...], Item] = {}
+        self.merges: dict[tuple[Item, ...], Item] = {}
         self.update_merges()
 
     # Updates the merges
     def update_merges(self) -> None:
         self.merges.clear()
-        merge: List[Item]
+        merge: list[Item]
         for item in self.items.items.values():
             if not item.raw_merges:
                 continue
@@ -35,12 +37,12 @@ class MergeInterface:
 
     # Gets a possible merge created from a tuple/list of items
     def get_merge(self, items: Collection[Item]) -> Optional[Item]:
-        sorted_items: List[Item] = sorted(items, key=lambda item : item.id)
+        sorted_items: list[Item] = sorted(items, key=lambda item : item.id)
         return self.merges.get(tuple(sorted_items))
 
     # Gets a list of merges for the "merges" command.
     def get_merges(self) -> str:
-        res: List[str] = []
+        res: list[str] = []
         for merge, result in self.merges.items():
             items = sorted(item.name for item in merge)
             res.append(f"`{'` + `'.join(items)}` → {result}")
@@ -50,7 +52,7 @@ class MergeInterface:
     # Performs a merge and returns a formatted names list of items and the
     # resulting item.
     def merge_item(self, user: User, items: Collection[Item],
-            amount: int) -> Tuple[str, Item]:
+            amount: int) -> tuple[str, Item]:
         items = sorted(items, key=lambda item : item.name)
         if not items or amount < 1:
             raise Error('You... uhh... merge nothing to make '
@@ -71,7 +73,7 @@ class MergeInterface:
             raise Error(f"You can't merge {names}!")
 
         # Ensure a user has every item first
-        required_items: Dict[Item, int] = {}
+        required_items: dict[Item, int] = {}
         for item in items:
             required_items[item] = required_items.get(item, 0) + amount
         for item, qty in required_items.items():

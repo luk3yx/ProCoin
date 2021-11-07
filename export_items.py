@@ -3,6 +3,7 @@
 # A Python script to create items.csv.
 #
 
+from __future__ import annotations
 import csv, json, os, sys
 from procoin.items import Item, ItemInterface
 

@@ -3,11 +3,13 @@
 # Converts the users.json export from CoinGames into ProCoin's users format.
 #
 
+from __future__ import annotations
 import collections, json, os, random, sys
 from procoin.items import Item, ItemInterface
 from procoin.store import Store
 from procoin.users import User, UserInterface
-from typing import Any, Dict, Iterator, List, Set, Union
+from collections.abc import Iterator
+from typing import Any, Union
 
 try:
     from ruamel.yaml import YAML
@@ -38,9 +40,9 @@ def main(*, dir: str = os.path.dirname(__file__)):
     assert isinstance(users, dict)
 
     # Caches items
-    cached_items: Dict[str, Item] = {}
+    cached_items: dict[str, Item] = {}
 
-    unknown_items: Set[str] = set()
+    unknown_items: set[str] = set()
 
     # Iterate over the users
     print('Converting...')

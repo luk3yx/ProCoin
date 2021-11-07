@@ -1,7 +1,8 @@
+from __future__ import annotations
 from . import db, items, merges, store, users
 from .items import Item as _Item
 from .store import CannotAffordError, Error, ItemNotFoundError
-from typing import List, Optional, Tuple, Union
+from typing import Optional, Union
 import random
 
 class ProCoin:
@@ -118,9 +119,9 @@ class ProCoin:
             raise Error('Unknown user!') from exc
 
     # Merges items and returns the item names and resulting item.
-    def merge(self, user_id: Union[str, int], item_strings: List[str],
-            amount: int) -> Tuple[str, _Item]:
-        item_list: List[_Item] = []
+    def merge(self, user_id: Union[str, int], item_strings: list[str],
+            amount: int) -> tuple[str, _Item]:
+        item_list: list[_Item] = []
         for item_string in item_strings:
             item = self.items.lookup(item_string)
             if not item:
@@ -133,7 +134,7 @@ class ProCoin:
     # Uses a scroll of remove curse a user has to remove a cursed item. Will
     # return the item removed and (optionally) the random removed item.
     def remove_curse(self, user_id: Union[str, int]) \
-            -> Tuple[_Item, Optional[_Item]]:
+            -> tuple[_Item, Optional[_Item]]:
         user = self.users.get_or_create(user_id)
         scroll = self.items.get_item('remove_curse')
         user.assert_has_item(scroll, 1)

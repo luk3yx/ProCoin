@@ -3,14 +3,15 @@
 # A Python script to sort items.json.
 #
 
+from __future__ import annotations
 import collections, json, os, random, sys
 from procoin.items import Item, ItemInterface
-from typing import Any, Dict, List, Union
+from typing import Any, Union
 
 class ItemsError(Exception):
     pass
 
-_ItemType = Dict[str, Union[str, int, bool, List[List[str]]]]
+_ItemType = Union['dict[str, Union[str, int, bool, list[list[str]]]]']
 def _sort_item(item: Item) -> _ItemType:
     """
     Similar to Item.to_dict(), however returns an OrderedDict.
@@ -27,12 +28,12 @@ def _sort_item(item: Item) -> _ItemType:
         res['cursed'] = item.cursed
     return res
 
-def sort_items(items: ItemInterface) -> Dict[str, _ItemType]:
+def sort_items(items: ItemInterface) -> dict[str, _ItemType]:
     """
     Sorts a dict of items and returns a collections.OrderedDict. In Python 3.7+
     or CPython 3.6+ an OrderedDict is not necessary.
     """
-    res: Dict[str, _ItemType] = collections.OrderedDict()
+    res: dict[str, _ItemType] = collections.OrderedDict()
     for item_id in sorted(items.items, key=lambda i : items.get_name(i).lower()):
         res[item_id] = _sort_item(items.get_item(item_id))
     return res
@@ -64,7 +65,7 @@ def to_json(items: ItemInterface):
     assert orig == json.loads(res), 'Error while tweaking formatting!'
     return res
 
-def assign_new_ids(items: Dict[str, Any]) -> List[str]:
+def assign_new_ids(items: dict[str, Any]) -> list[str]:
     """
     Assigns new IDs to any item ID that starts with "NEW:" or is an empty
     string. Will modify the dict in place. Will return a list of new item IDs

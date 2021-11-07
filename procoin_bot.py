@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from __future__ import annotations
 import discord # type: ignore
 from discord.ext import commands # type: ignore
 import os

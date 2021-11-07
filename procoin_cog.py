@@ -1,6 +1,7 @@
+from __future__ import annotations
 import asyncio, discord # type: ignore
 from discord.ext import commands, tasks # type: ignore
-from typing import Any, List, Optional, Tuple, Union, TYPE_CHECKING
+from typing import Any, Optional, Union, TYPE_CHECKING
 import os, time, traceback
 
 # TODO: Something better
@@ -152,8 +153,8 @@ class BotInterface(Cog, name='General commands'):
                               colour=0xfdd835)
         await ctx.send(embed=embed)
 
-    def __parse_item_and_quantity(self, parameters: Tuple[str, ...]) \
-            -> Tuple[str, int]:
+    def __parse_item_and_quantity(self, parameters: tuple[str, ...]) \
+            -> tuple[str, int]:
         if len(parameters) < 1:
             raise commands.UserInputError
         item_string = ' '.join(parameters)
@@ -251,7 +252,7 @@ class BotInterface(Cog, name='General commands'):
     @commands.command(help='Displays a list of possible merges.',
                       usage='<upgrade 1>, <upgrade 2>, ... [amount]')
     async def merge(self, ctx, *parameters: str) -> None:
-        items: List[str] = ' '.join(parameters).replace('+', ',').split(',')
+        items: list[str] = ' '.join(parameters).replace('+', ',').split(',')
         if items:
             p = tuple(items[-1].split(' '))
             last_item, qty = self.__parse_item_and_quantity(p)

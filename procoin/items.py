@@ -1,10 +1,12 @@
-from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, Union
+from __future__ import annotations
+from collections.abc import Callable, Iterable
+from typing import Any, Optional, Union
 
 # TODO: Move this to a different file.
 def format_currency(amount: int) -> str:
     return f'{amount:,} 💰'
 
-prefixes: Tuple[Tuple[int, str], ...] = (
+prefixes: tuple[tuple[int, str], ...] = (
     (2 ** 32 - 1, '💎'),
     (1_000_000_000, '$$'),
     (1_000_000, '$'),
@@ -13,7 +15,7 @@ class Item:
     __slots__ = ('id', 'name', 'cost', 'boost', 'default_qty', 'raw_merges',
         'cursed')
     def __init__(self, id: str, name: str, cost: int, boost: int,
-            default_qty: int, raw_merges: List[List[str]], cursed: bool) \
+            default_qty: int, raw_merges: list[list[str]], cursed: bool) \
             -> None:
         self.id = id
         self.name = name
@@ -66,7 +68,7 @@ class Item:
             res += f', provides a boost of {format_currency(self.boost)}'
         return res + ')'
 
-    def to_dict(self) -> Dict[str, Union[str, int, bool, List[List[str]]]]:
+    def to_dict(self) -> dict[str, Union[str, int, bool, list[list[str]]]]:
         return {'id': self.id, 'name': self.name, 'cost': self.cost,
                 'boost': self.boost, 'default_qty': self.default_qty,
                 'merges': self.raw_merges, 'cursed': self.cursed}
@@ -75,7 +77,7 @@ class Item:
     # This treats "default quantity" as an alias for "default_qty" for
     # compatibility with CoinGames.
     @classmethod
-    def from_dict(cls, id: str, data: Dict[Any, Any]):
+    def from_dict(cls, id: str, data: dict[Any, Any]):
         name = data['name']
         cost = data['cost']
         boost = data['boost']
@@ -99,12 +101,12 @@ class Item:
 class ItemInterface:
     __slots__ = ('items',)
     # Items: {"item_id": <Item object at ...>}
-    def __init__(self, items: Dict[str, Item]) -> None:
+    def __init__(self, items: dict[str, Item]) -> None:
         self.items = items
 
     # Items: {"item_id": {"name": "<name>", ...}}
     @classmethod
-    def from_dict(cls, items: Dict[str, Dict[Any, Any]]):
+    def from_dict(cls, items: dict[str, dict[Any, Any]]):
         return cls({k: Item.from_dict(k, v) for k, v in items.items()})
 
     def get_item(self, item_id: str) -> Item:
