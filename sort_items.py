@@ -11,6 +11,7 @@ from typing import Any, Union
 class ItemsError(Exception):
     pass
 
+# This Union[] is a hack to keep Python 3.7 and 3.8 support
 _ItemType = Union['dict[str, Union[str, int, bool, list[list[str]]]]']
 def _sort_item(item: Item) -> _ItemType:
     """
