@@ -25,14 +25,7 @@ def _raw_save(filename: str, raw: str) -> None:
                 delete=False) as f:
             f.write(raw)
             tmpfn = f.name
-        try:
-            os.rename(tmpfn, filename)
-        except FileExistsError:
-            if os.path.exists(filename + '~'):
-                os.remove(filename + '~')
-            os.rename(filename, filename + '~')
-            os.rename(tmpfn, filename)
-            os.remove(filename + '~')
+        os.replace(tmpfn, filename)
 
 # A blocking save() function
 def save_blocking(filename: str, data: dict[str, Any]) -> None:
