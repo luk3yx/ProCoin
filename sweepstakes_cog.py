@@ -48,10 +48,7 @@ class Sweepstakes(Cog):
         if spam_count.messages < 7 or randint(0, 2):
             return
 
-        old_item = self.next_item
-        self.__set_cursed_item()
-        await self.do_sweepstake(message)
-        self.next_item = old_item
+        await self.give_prize(message, self.__get_cursed_item())
 
     @commands.Cog.listener()
     async def on_message(self, message) -> None:
@@ -63,41 +60,36 @@ class Sweepstakes(Cog):
         if self.in_race:
             if self.bot.user.mentioned_in(message):
                 self.in_race = False
-                await self.give_prize(message)
+                item = self.next_item
+                self.next_item = None
+                assert item is not None
+                await self.give_prize(message, item)
             return
         else:
             self.next_event -= 1
 
         if self.next_event <= 0:
             self.__set_timer()
-            self.__set_new_item()
             if randint(0, 1) == 1:
                 # Do sweepstakes
                 await self.do_sweepstake(message)
             else:
                 # Start a race
-                assert self.next_item
+                self.next_item = self.__get_random_prize()
+                self.in_race = True
                 await message.channel.send(f'The next person to @mention me ' \
                     f'will receive 1 {self.next_item.prefixed_name}!')
-                self.in_race = True
 
     async def do_sweepstake(self, message) -> None:
-        # Keep mypy happy
-        assert self.next_item
+        prize = self.__get_random_prize()
+        await self.give_prize(message, prize, 'Sweepstakes')
 
+    async def give_prize(self, message, prize: Item,
+                         congratulations: str = 'Congratulations') -> None:
         user = self.pc.users.get_or_create(message.author.id)
-        user.add_item(self.next_item, 1)
-        await message.channel.send(f'Sweepstakes! ' \
-            f'{message.author.mention} won a {self.next_item.prefixed_name}!')
-        self.next_item = None
-
-    async def give_prize(self, message) -> None:
-        assert self.next_item
-
-        user = self.pc.users.get_or_create(message.author.id)
-        user.add_item(self.next_item, 1)
-        await message.channel.send(f'Congratulations! ' \
-            f'{message.author.mention} won a {self.next_item.prefixed_name}!')
+        user.add_item(prize, 1)
+        await message.channel.send(f'{congratulations}! '
+            f'{message.author.mention} won a {prize.prefixed_name}!')
 
     # These functions start with two underscores so Python can mangle names,
     # I'm scared discord.py is going to add functions starting with a single
@@ -105,13 +97,15 @@ class Sweepstakes(Cog):
     def __item_filter(self, item: Item) -> bool:
         return item.cost < 1_000_000_000 and not item.cursed
 
-    def __set_new_item(self) -> None:
+    def __get_random_prize(self) -> Item:
         items = tuple(self.pc.items.filter_by(self.__item_filter))
-        self.next_item = choice(items)
+        return choice(items)
 
-    def __set_cursed_item(self) -> None:
-        items = tuple(self.pc.items.filter_by(lambda item : item.cursed))
-        self.next_item = choice(items)
+    def __get_cursed_item(self) -> Item:
+        items = tuple(self.pc.items.filter_by(
+            lambda item : item.cursed and item.boost <= 0
+        ))
+        return choice(items)
 
     def __set_timer(self) -> None:
         self.next_event = randint(173, 427)
